@@ -1,6 +1,6 @@
 class Player(object):
 
-    def __init__(self, name, lastname, birthdate, gender, rank, player_id):
+    def __init__(self, name, lastname, birthdate, gender, rank, player_id=int):
         self.name = name
         self.lastname = lastname
         self.birthdate = birthdate

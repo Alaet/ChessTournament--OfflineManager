@@ -1,4 +1,4 @@
-from.model import Tournament
+from .model import Tournament
 from Player.model import Player
 
 
@@ -15,6 +15,7 @@ class TournamentController(object):
         :return: object(Tournament)
         """
         all_players = self.deserialized_tournament_players(serialized_player)
+        print(all_players)
         name = self.view.prompt_for_tournament_name()
         place = self.view.prompt_for_tournament_place()
         date = self.view.prompt_for_tournament_date()
@@ -80,8 +81,8 @@ class TournamentController(object):
             birthdate = serialized_player[x]['birthdate']
             gender = serialized_player[x]['gender']
             rank = serialized_player[x]['rank']
-            id = serialized_player[x]['id']
-            deserialazied_player = Player(name=name, lastname=lastname, birthdate=birthdate, gender=gender,
-                                          rank=rank, player_id=id)
-            all_players.append(deserialazied_player)
+            id = x#serialized_player[x]['id']
+            deserialized_player = Player(name=name, lastname=lastname, birthdate=birthdate, gender=gender,
+                                         rank=rank, player_id=id)
+            all_players.append(deserialized_player)
         return all_players

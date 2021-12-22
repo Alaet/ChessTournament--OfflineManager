@@ -5,7 +5,7 @@ from Tournament.controller import TournamentController
 from Tournament.view import TournamentView
 from Round.controller import RoundController
 from Round.view import RoundView
-from tinydb import TinyDB, Query
+from tinydb import TinyDB
 
 db = TinyDB('db.json')
 players_table = db.table('players')

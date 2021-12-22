@@ -48,10 +48,8 @@ class TournamentView:
             for player in all_players:
                 if choice.isnumeric() and choice == str(player.id):
                     picked_player.append(player)
+                    print("Joueur " + str(x) + " : " + player.name + " ajouté au tournoi")
                     x += 1
-                    continue
-                else:
-                    print(str(player.id) + ".  " + player.name)
             if not choice.isnumeric() or choice == "":
                 print("Id non reconnu")
 
