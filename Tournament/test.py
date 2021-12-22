@@ -4,7 +4,7 @@ import unittest
 from Player.test import TestPlayerModel
 from .controller import TournamentController
 from .view import TournamentView
-
+from Menu.view import View
 
 class TestTournamentController(unittest.TestCase):
 
@@ -15,3 +15,6 @@ class TestTournamentController(unittest.TestCase):
         assert tournament
         return tournament
 
+    def display_players(self):
+        players = TestPlayerModel.create_player(self=TestPlayerModel)
+        View.display_all_players(View, players)

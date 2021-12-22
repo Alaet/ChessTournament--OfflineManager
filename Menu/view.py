@@ -73,9 +73,9 @@ class View:
 
         for x, match in enumerate(matches):
             if match.evaluated:
-                print(str(x) + ".Match terminé\n")
+                print(str(x+1) + ".Match terminé\n")
             else:
-                print(str(x) + "." + str(match.match_info[0][0].name) + " contre " +
+                print(str(x+1) + "." + str(match.match_info[0][0].name) + " contre " +
                       str(match.match_info[1][0].name) + "\n")
         match_choice = input()
         return match_choice
@@ -138,7 +138,23 @@ class View:
             print(str(all_tournaments.index(all_tournaments[x])) + " - " + t.name)
 
     def display_all_players(self, all_players):
-        for player in all_players:
-            print("\nID :" + str(player.id) + " - Nom :" + player.name + " - Rang :" + str(
-                player.rank) + "\n")
-        input()
+        print("Afficher par ordre alphabétique - N\n")
+        print("Afficher par rang - R\n")
+        choice = type(input)
+        while choice != "N" or choice != "R":
+            choice = input()
+            if choice == "N":
+                sorted_by_name = sorted(all_players, key=lambda x: x.name)
+                for player in sorted_by_name:
+                    print("Nom :" + player.name + " - Rang :" + str(player.rank) + "\n")
+                break
+            elif choice == "R":
+                sorted_by_rank = sorted(all_players, key=lambda x: x.rank)
+                for player in sorted_by_rank:
+                    print("Nom :" + player.name + " - Rang :" + str(player.rank) + "\n")
+                break
+            else:
+                View.display_invalid_choice(self)
+
+
+
