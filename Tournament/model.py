@@ -1,6 +1,6 @@
 class Tournament:
 
-    def __init__(self, name, place, date, player):
+    def __init__(self, name, place, date, time_mode, player, description):
         self.match_count = 0
         self.round_count = 1
         self.name = name
@@ -10,4 +10,6 @@ class Tournament:
         self.place = place
         self.date = date
         self.close = False
+        self.time_mode = time_mode
+        self.description = description
 

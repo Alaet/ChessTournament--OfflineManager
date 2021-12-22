@@ -6,6 +6,7 @@ from .controller import TournamentController
 from .view import TournamentView
 from Menu.view import View
 
+
 class TestTournamentController(unittest.TestCase):
 
     def test_tournament_creation(self):

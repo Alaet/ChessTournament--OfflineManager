@@ -97,3 +97,27 @@ class TournamentView:
                 print("Le format de la date du tournoi n'est pas reconnue")
 
         return birthdate
+
+    @staticmethod
+    def prompt_for_time_mode():
+
+        time_mode = type(input)
+        print("Entrez le type de partie    ( 0 - Menu principal )\nBullet : Bul\nBlitz : Bli\nCoup rapide : Cra\n")
+        while not time_mode == "Bul" or not time_mode == "Bli" or not time_mode == "Cra":
+            time_mode = input()
+            if time_mode == "Bul":
+                return time_mode
+            elif time_mode == "Bli":
+                return time_mode
+            elif time_mode == "Cra":
+                return time_mode
+            elif time_mode == "0":
+                break
+            else:
+                print("Format non reconnu")
+        return time_mode
+
+    @staticmethod
+    def prompt_for_description():
+        description = input("Ajouter un commentaire sur le tournoi :\n\n")
+        return description

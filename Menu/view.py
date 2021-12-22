@@ -155,6 +155,3 @@ class View:
                 break
             else:
                 View.display_invalid_choice(self)
-
-
-

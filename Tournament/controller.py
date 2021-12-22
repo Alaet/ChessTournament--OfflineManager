@@ -16,8 +16,10 @@ class TournamentController(object):
         name = self.view.prompt_for_tournament_name()
         place = self.view.prompt_for_tournament_place()
         date = self.view.prompt_for_tournament_date()
+        time_mode = self.view.prompt_for_time_mode()
         players = self.view.pick_players_for_tournament(all_players)
-        new_tournament = Tournament(name, place, date, players)
+        description = self.view.prompt_for_description()
+        new_tournament = Tournament(name, place, date, time_mode, players, description)
         return new_tournament
 
     def evaluate_match(self, match, tournament):
