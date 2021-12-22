@@ -32,7 +32,7 @@ class TestPlayerModel(unittest.TestCase):
     def test_update_score(self):
         players = self.create_player()
         for player in players:
-            print("player : " + player.name + " rank : " + str(player.rank)+ "\n")
+            print("player : " + player.name + " rank : " + str(player.rank) + "\n")
         p_c = PlayerController(PlayerView)
         p_c.update_rank(tournament_players=players)
         for player in players:

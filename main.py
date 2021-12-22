@@ -36,16 +36,21 @@ def main():
                 if -1 in detail_choices:
                     pass
                 else:
-                    result = tournament_controller.evaluate_match(all_tournaments[detail_choices[0]].rounds[detail_choices[
-                        1]].match_history[detail_choices[2]], all_tournaments[detail_choices[0]])
+                    result = tournament_controller.evaluate_match(all_tournaments[detail_choices[0]].
+                                                                  rounds[detail_choices[1]].
+                                                                  match_history[detail_choices[2]],
+                                                                  all_tournaments[detail_choices[0]])
 
                     if result == 4:
-                        if not all_tournaments[detail_choices[0]].round_count == all_tournaments[detail_choices[0]].turn:
-                            tournament_controller.cloture_round(all_tournaments[detail_choices[0]].rounds[detail_choices[1]])
+                        if not all_tournaments[detail_choices[0]].round_count == all_tournaments[detail_choices[0]].\
+                                turn:
+
+                            tournament_controller.cloture_round(all_tournaments[detail_choices[0]].
+                                                                rounds[detail_choices[1]])
+
                             next_round = round_controller.generate_round(all_tournaments[detail_choices[0]])
                             all_tournaments[detail_choices[0]].rounds.append(next_round)
                         else:
-                            # AJOUT FUNCTION UPDATE RANK EACH PLAYER
                             player_controller.update_rank(all_tournaments[detail_choices[0]].players_list)
                             all_tournaments[detail_choices[0]].close = True
                             tournament_controller.reset_score(all_tournaments[detail_choices[0]].players_list)

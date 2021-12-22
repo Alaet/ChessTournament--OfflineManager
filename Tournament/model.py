@@ -12,4 +12,3 @@ class Tournament:
         self.close = False
         self.time_mode = time_mode
         self.description = description
-
