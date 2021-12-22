@@ -63,3 +63,15 @@ class PlayerView:
                 print("Le format de la date de naissance n'est pas reconnue")
 
         return birthdate
+
+    @staticmethod
+    def prompt_for_new_rank():
+        new_rank = input()
+        while new_rank == "0" or new_rank.isalpha() or new_rank == "":
+            if new_rank == "0":
+                print("Impossible de mettre le rang à 0")
+                new_rank = input()
+            elif new_rank.isalpha() or new_rank == "":
+                print("Saisissez une valeur numérique")
+                new_rank = input()
+        return int(new_rank)

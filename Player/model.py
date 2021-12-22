@@ -16,3 +16,7 @@ class Player(object):
         :return: updated self.score
         """
         self.score += points
+
+    def update_rank(self, new_rank):
+        if new_rank != 0:
+            self.rank = new_rank

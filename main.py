@@ -45,6 +45,8 @@ def main():
                             next_round = round_controller.generate_round(all_tournaments[detail_choices[0]])
                             all_tournaments[detail_choices[0]].rounds.append(next_round)
                         else:
+                            # AJOUT FUNCTION UPDATE RANK EACH PLAYER
+                            player_controller.update_rank(all_tournaments[detail_choices[0]].players_list)
                             all_tournaments[detail_choices[0]].close = True
                             tournament_controller.reset_score(all_tournaments[detail_choices[0]].players_list)
 

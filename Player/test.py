@@ -3,6 +3,8 @@ import random
 import unittest
 
 from .model import Player
+from .controller import PlayerController
+from .view import PlayerView
 
 
 class TestPlayerModel(unittest.TestCase):
@@ -26,3 +28,12 @@ class TestPlayerModel(unittest.TestCase):
         player[0].add_score(0.5)
         new_score = player[0].score
         self.assertNotEqual(old_score, new_score)
+
+    def test_update_score(self):
+        players = self.create_player()
+        for player in players:
+            print("player : " + player.name + " rank : " + str(player.rank)+ "\n")
+        p_c = PlayerController(PlayerView)
+        p_c.update_rank(tournament_players=players)
+        for player in players:
+            print("player : " + player.name + " rank : " + str(player.rank) + "\n")

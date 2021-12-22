@@ -8,12 +8,6 @@ class PlayerController(object):
         self.model = object
         self.player_id = -1
 
-    def choice_checker(self, choice):
-        if choice == "0":
-            return None
-        else:
-            return choice
-
     def create_player(self):
         """
         prompt for player info and return them as object Player
@@ -30,3 +24,7 @@ class PlayerController(object):
         id = self.player_id
         new_player = Player(name, lastname, birthdate, gender, rank, id)
         return new_player
+
+    def update_rank(self, tournament_players):
+        for player in tournament_players:
+            player.update_rank(self.view.prompt_for_new_rank())
