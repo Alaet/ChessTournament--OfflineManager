@@ -16,7 +16,7 @@ class TestRoundController(unittest.TestCase):
     def test_cloture_round(self):
         tournament = Tournament("lol", "ici", "22.12.92", "Bul", TestPlayerModel.create_player(TestPlayerModel), [])
         round = Round(tournament)
-        TournamentController.cloture_round(TournamentController, round)
+        TournamentController.cloture_round(round)
         self.assertTrue(len(round.round_ending_date) > 0)
 
     def test_evaluate_match(self):
@@ -24,4 +24,4 @@ class TestRoundController(unittest.TestCase):
         round = RoundController.generate_round(RoundController, tournament=tournament)
         print(round.match_history)
         match_tournament = round.match_history
-        TournamentController.evaluate_match(TournamentController, match_tournament[0], tournament)
+        TournamentController.evaluate_match(match_tournament[0], tournament)

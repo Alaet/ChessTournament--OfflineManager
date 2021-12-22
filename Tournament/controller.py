@@ -1,4 +1,5 @@
 from.model import Tournament
+from Player.model import Player
 
 
 class TournamentController(object):
@@ -6,13 +7,14 @@ class TournamentController(object):
     def __init__(self, view):
         self.view = view
 
-    def create_tournament(self, all_players):
+    def create_tournament(self, serialized_player):
         """
         Prompt for tournament details, and players from list(all_players) of object(Player) to pick
         to return an object(Tournament)
-        :param all_players: list(object(Player))
+        :param serialized_player: TinyDB list(Document(Player_data))
         :return: object(Tournament)
         """
+        all_players = self.deserialized_tournament_players(serialized_player)
         name = self.view.prompt_for_tournament_name()
         place = self.view.prompt_for_tournament_place()
         date = self.view.prompt_for_tournament_date()
@@ -22,7 +24,8 @@ class TournamentController(object):
         new_tournament = Tournament(name, place, date, time_mode, players, description)
         return new_tournament
 
-    def evaluate_match(self, match, tournament):
+    @staticmethod
+    def evaluate_match(match, tournament):
         """
         Prompt for winner from matched player then add score to this player
         and return match number index for this round
@@ -54,7 +57,8 @@ class TournamentController(object):
 
         return tournament.match_count
 
-    def cloture_round(self, round):
+    @staticmethod
+    def cloture_round(round):
 
         if input("Clôturer le round ?  O/N\n") == "O" or "N":
             import datetime
@@ -62,6 +66,22 @@ class TournamentController(object):
             round.round_ending_date = round.round_ending_date.strftime("%Y-%m-%d %H:%M:%S")
             print(round.round_ending_date)
 
-    def reset_score(self, all_players):
+    @staticmethod
+    def reset_score(all_players):
         for player in all_players:
             player.score = 0
+
+    @staticmethod
+    def deserialized_tournament_players(serialized_player):
+        all_players = []
+        for x, player in enumerate(serialized_player):
+            name = serialized_player[x]['name']
+            lastname = serialized_player[x]['lastname']
+            birthdate = serialized_player[x]['birthdate']
+            gender = serialized_player[x]['gender']
+            rank = serialized_player[x]['rank']
+            id = serialized_player[x]['id']
+            deserialazied_player = Player(name=name, lastname=lastname, birthdate=birthdate, gender=gender,
+                                          rank=rank, player_id=id)
+            all_players.append(deserialazied_player)
+        return all_players

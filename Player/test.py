@@ -15,7 +15,7 @@ class TestPlayerModel(unittest.TestCase):
         for x in range(0, 8):
             player = Player(name="Joueur"+str(x), lastname="LastName"+str(x), birthdate="22/12/92", gender="M",
                             rank=random.randrange(1, 50),
-                            id=x)
+                            player_id=x)
             players_list.append(player)
             assert player
         assert 8, len(players_list)

@@ -46,13 +46,14 @@ class TournamentView:
         while x < 8:
             choice = input()
             for player in all_players:
-                if choice == str(player.id):
+                if choice.isnumeric() and choice == str(player.id):
                     picked_player.append(player)
                     x += 1
-                elif not choice.isnumeric() or choice == "":
-                    print("Id non reconnu")
+                    continue
                 else:
-                    print("Id non reconnu")
+                    print(str(player.id) + ".  " + player.name)
+            if not choice.isnumeric() or choice == "":
+                print("Id non reconnu")
 
         return picked_player
 
@@ -100,16 +101,15 @@ class TournamentView:
 
     @staticmethod
     def prompt_for_time_mode():
-
         time_mode = type(input)
-        print("Entrez le type de partie    ( 0 - Menu principal )\nBullet : Bul\nBlitz : Bli\nCoup rapide : Cra\n")
-        while not time_mode == "Bul" or not time_mode == "Bli" or not time_mode == "Cra":
+        print("Entrez le type de partie    ( 0 - Menu principal )\n1. Bullet\n2. Blitz\n3. Coup rapide\n")
+        while not time_mode == "1" or not time_mode == "2" or not time_mode == "3":
             time_mode = input()
-            if time_mode == "Bul":
+            if time_mode == "1":
                 return time_mode
-            elif time_mode == "Bli":
+            elif time_mode == "2":
                 return time_mode
-            elif time_mode == "Cra":
+            elif time_mode == "3":
                 return time_mode
             elif time_mode == "0":
                 break

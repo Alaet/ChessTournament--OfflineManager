@@ -5,9 +5,14 @@ from Tournament.controller import TournamentController
 from Tournament.view import TournamentView
 from Round.controller import RoundController
 from Round.view import RoundView
+from tinydb import TinyDB, Query
+
+db = TinyDB('db.json')
+players_table = db.table('players')
 
 
 def main():
+
     run = True
     all_players = []
     all_tournaments = []
@@ -24,9 +29,11 @@ def main():
             case "1":
                 new_player = player_controller.create_player()
                 if new_player is not None:
+                    players_table.insert(new_player)
                     all_players.append(new_player)
             case "2":
-                new_tournament = tournament_controller.create_tournament(all_players)
+                serialized_players = players_table.all()
+                new_tournament = tournament_controller.create_tournament(serialized_players)
                 first_round = round_controller.generate_round(new_tournament)
                 new_tournament.rounds.append(first_round)
                 if new_tournament is not None:
