@@ -2,6 +2,7 @@ from .model import Tournament
 from Player.model import Player
 
 
+
 class TournamentController(object):
 
     def __init__(self, view):
@@ -20,9 +21,12 @@ class TournamentController(object):
         date = self.view.prompt_for_tournament_date()
         time_mode = self.view.prompt_for_time_mode()
         players = self.view.pick_players_for_tournament(all_players)
+        serialized_players = self.serialize_tournament_players(players)
         description = self.view.prompt_for_description()
-        new_tournament = Tournament(name, place, date, time_mode, players, description)
-        return new_tournament
+        new_tournament = Tournament(name, place, date, time_mode, serialized_players, description)
+
+        serialized_tournament = self.serialize_tournament(new_tournament)
+        return serialized_tournament
 
     @staticmethod
     def evaluate_match(match, tournament):
@@ -90,3 +94,41 @@ class TournamentController(object):
                                          rank=rank, player_id=id)
             all_players.append(deserialized_player)
         return all_players
+
+    def serialize_tournament_players(self, tournament_player):
+        serialized_players = []
+        for player in tournament_player:
+            serialized_players.append({
+                'name': player.name,
+                'lastname': player.lastname,
+                'birthdate': player.birthdate,
+                'gender': player.gender,
+                'rank': player.rank,
+                'id': player.id
+            })
+        return serialized_players
+
+    @staticmethod
+    def serialize_tournament(new_tournament):
+        serialized_tournament = {
+            'name': new_tournament.name,
+            'place': new_tournament.place,
+            'date': new_tournament.date,
+            'time_mode': new_tournament.time_mode,
+            'players_list': new_tournament.players_list,
+            'description': new_tournament.description,
+            'rounds': []
+        }
+        return serialized_tournament
+
+    def deserialize_tournament(self, new_tournament):
+
+        name = new_tournament['name']
+        place = new_tournament['place']
+        date = new_tournament['date']
+        time_mode = new_tournament['time_mode']
+        players_list = self.deserialized_tournament_players(new_tournament['players_list'])
+        description = new_tournament['description']
+        deserialized_tournament = Tournament(name, place, date, time_mode, players_list, description)
+
+        return deserialized_tournament

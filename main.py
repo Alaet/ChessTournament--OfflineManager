@@ -9,6 +9,7 @@ from tinydb import TinyDB, Query
 
 db = TinyDB('db.json')
 players_table = db.table('players')
+tournament_table = db.table('tournaments')
 
 
 def main():
@@ -30,15 +31,20 @@ def main():
             case "1":
                 new_player = player_controller.create_player()
                 if new_player is not None:
-                    players_table.insert(new_player)
-                    all_players.append(new_player)
+                    players_table.insert(new_player[1])
+                    all_players.append(new_player[0])
             case "2":
                 serialized_players = players_table.all()
                 new_tournament = tournament_controller.create_tournament(serialized_players)
-                first_round = round_controller.generate_round(new_tournament)
-                new_tournament.rounds.append(first_round)
                 if new_tournament is not None:
+                    tournament_table.insert(new_tournament)
                     all_tournaments.append(new_tournament)
+                deserialized_tournament = tournament_controller.deserialize_tournament(new_tournament)
+                first_round = round_controller.generate_round(deserialized_tournament)
+                tournament_table.update({'rounds': [first_round]})
+
+                #new_tournament.rounds.append(first_round)
+
             case "3":
                 detail_choices = main_view.prompt_for_match_detail(all_tournaments)
                 if -1 in detail_choices:

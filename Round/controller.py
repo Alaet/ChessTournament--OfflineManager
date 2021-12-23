@@ -15,6 +15,7 @@ class RoundController(object):
         :return: object(Round) as new_round
         """
         new_round = Round(tournament)
+
         sorted_list = new_round.sort_players_as_dict(tournament.players_list)
         versus = new_round.generate_pair_from_id(sorted_list)
         new_round.generate_match_list(tournament.players_list, versus)
@@ -23,4 +24,13 @@ class RoundController(object):
 
         new_round.round_starting_date = datetime.datetime.now()
         new_round.round_starting_date = new_round.round_starting_date.strftime("%Y-%m-%d %H:%M:%S")
-        return new_round
+        serialize_round = self.serialize_round(new_round)
+        return serialize_round
+
+    def serialize_round(self, new_round):
+        serialize_round = {
+            'round_name': new_round.round_name,
+            'round_starting_date': new_round.round_starting_date,
+            'round_ending_date': new_round.round_ending_date
+        }
+        return serialize_round

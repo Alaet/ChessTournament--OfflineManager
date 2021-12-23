@@ -24,6 +24,7 @@ class PlayerController(object):
         id = self.player_id
         new_player = Player(name, lastname, birthdate, gender, rank, player_id=id)
         serialized_player = self.serialize_player(new_player)
+
         return serialized_player
 
     def update_rank(self, tournament_players):
