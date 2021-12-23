@@ -10,6 +10,7 @@ from tinydb import TinyDB, Query
 db = TinyDB('db.json')
 players_table = db.table('players')
 tournament_table = db.table('tournaments')
+serialized_players = players_table.all()
 
 
 def main():
@@ -34,16 +35,16 @@ def main():
                     players_table.insert(new_player[1])
                     all_players.append(new_player[0])
             case "2":
-                serialized_players = players_table.all()
                 new_tournament = tournament_controller.create_tournament(serialized_players)
                 if new_tournament is not None:
                     tournament_table.insert(new_tournament)
                     all_tournaments.append(new_tournament)
                 deserialized_tournament = tournament_controller.deserialize_tournament(new_tournament)
                 first_round = round_controller.generate_round(deserialized_tournament)
-                tournament_table.update({'rounds': [first_round]})
-
-                #new_tournament.rounds.append(first_round)
+                tournament_table.update({'rounds': first_round})
+                # SERIALIZE MATCH ROUND voir deplacer generation match du model vers round controller into match
+                # controller ?
+                # new_tournament.rounds.append(first_round)
 
             case "3":
                 detail_choices = main_view.prompt_for_match_detail(all_tournaments)
@@ -77,7 +78,9 @@ def main():
                 report_menu_choice = main_view.display_reports_menu()
                 match report_menu_choice:
                     case "1":
-                        main_view.display_all_players(all_players)
+                        deserialized_players = tournament_controller.deserialized_tournament_players(
+                            serialized_players)
+                        main_view.display_all_players(deserialized_players)
                     case "2":
                         main_view.display_all_tournaments(all_tournaments)
                         t_choice = input()
