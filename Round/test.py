@@ -22,6 +22,7 @@ class TestRoundController(unittest.TestCase):
     def test_evaluate_match(self):
         tournament = Tournament("lol", "ici", "22.12.92", "Bul", TestPlayerModel.create_player(TestPlayerModel), [])
         round = RoundController.generate_round(RoundController, tournament=tournament)
-        print(round.match_history)
         match_tournament = round.match_history
-        TournamentController.evaluate_match(match_tournament[0], tournament)
+        for match in match_tournament:
+            TournamentController.evaluate_match(match, tournament)
+

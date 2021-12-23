@@ -75,3 +75,9 @@ class PlayerView:
                 print("Saisissez une valeur numérique")
                 new_rank = input()
         return int(new_rank)
+
+    @staticmethod
+    def display_new_player_rank(player):
+        print("\n*****************************\n")
+        print("Ancien rang de " + player.name + str(player.rank))
+        print("Mettez à jour le rang : ")

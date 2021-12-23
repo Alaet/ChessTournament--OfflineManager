@@ -28,6 +28,7 @@ class PlayerController(object):
 
     def update_rank(self, tournament_players):
         for player in tournament_players:
+            self.view.display_new_player_rank(player)
             player.update_rank(self.view.prompt_for_new_rank())
 
     @staticmethod

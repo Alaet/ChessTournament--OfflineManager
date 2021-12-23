@@ -15,7 +15,6 @@ class TournamentController(object):
         :return: object(Tournament)
         """
         all_players = self.deserialized_tournament_players(serialized_player)
-        print(all_players)
         name = self.view.prompt_for_tournament_name()
         place = self.view.prompt_for_tournament_place()
         date = self.view.prompt_for_tournament_date()
@@ -34,9 +33,10 @@ class TournamentController(object):
         :param tournament: object(Tournament)
         :return: int(tournament.match_count)
         """
+        if tournament.match_count == 4:
+            tournament.match_count = 0
 
         tournament.match_count += 1
-
         print("Match " + str(tournament.match_count) + "    ( 0 - Menu principal )\n1." + str(match.match_info[0][0]
                                                                                               .name) + "\n\n2."
               + str(match.match_info[1][0].name) + "\n3. Match nul")
@@ -46,15 +46,19 @@ class TournamentController(object):
             return result
         elif result == "1":
             match.match_info[0][0].score += 1
+            match.evaluated = True
 
         elif result == "2":
             match.match_info[1][0].score += 1
+            match.evaluated = True
 
         elif result == "3":
             match.match_info[0][0].score += (1 / 2)
             match.match_info[1][0].score += (1 / 2)
-
-        match.evaluated = True
+            match.evaluated = True
+        else:
+            print("******* Choix invalide *******")
+            tournament.match_count -= 1
 
         return tournament.match_count
 
@@ -81,7 +85,7 @@ class TournamentController(object):
             birthdate = serialized_player[x]['birthdate']
             gender = serialized_player[x]['gender']
             rank = serialized_player[x]['rank']
-            id = x#serialized_player[x]['id']
+            id = x
             deserialized_player = Player(name=name, lastname=lastname, birthdate=birthdate, gender=gender,
                                          rank=rank, player_id=id)
             all_players.append(deserialized_player)

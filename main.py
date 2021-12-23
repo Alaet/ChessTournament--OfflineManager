@@ -5,7 +5,7 @@ from Tournament.controller import TournamentController
 from Tournament.view import TournamentView
 from Round.controller import RoundController
 from Round.view import RoundView
-from tinydb import TinyDB
+from tinydb import TinyDB, Query
 
 db = TinyDB('db.json')
 players_table = db.table('players')
@@ -16,6 +16,7 @@ def main():
     run = True
     all_players = []
     all_tournaments = []
+
     main_view = View()
     player_view = PlayerView()
     player_controller = PlayerController(player_view)
@@ -49,7 +50,7 @@ def main():
                                                                   all_tournaments[detail_choices[0]])
 
                     if result == 4:
-                        if not all_tournaments[detail_choices[0]].round_count == all_tournaments[detail_choices[0]].\
+                        if not all_tournaments[detail_choices[0]].round_count > all_tournaments[detail_choices[0]].\
                                 turn:
 
                             tournament_controller.cloture_round(all_tournaments[detail_choices[0]].
@@ -59,6 +60,10 @@ def main():
                             all_tournaments[detail_choices[0]].rounds.append(next_round)
                         else:
                             player_controller.update_rank(all_tournaments[detail_choices[0]].players_list)
+                            for x, player in enumerate(all_tournaments[detail_choices[0]].players_list):
+                                User = Query()
+                                db_player_update = player_controller.serialize_player(player)
+                                players_table.upsert(db_player_update, User.name == str(player.name))
                             all_tournaments[detail_choices[0]].close = True
                             tournament_controller.reset_score(all_tournaments[detail_choices[0]].players_list)
 
