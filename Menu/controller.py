@@ -24,7 +24,6 @@ class MenuController:
     @staticmethod
     def run():
         run = True
-        all_tournaments = []
 
         main_view = View()
         player_view = PlayerView()
@@ -140,10 +139,12 @@ class MenuController:
                             if t_choice == "" or t_choice.isalpha():
                                 main_view.display_invalid_choice()
                                 continue
+                            tournament = None
                             for x, t in enumerate(deserialized_tournaments):
                                 if int(t_choice) == deserialized_tournaments.index(deserialized_tournaments[x]):
                                     tournament = deserialized_tournaments[int(t_choice)]
                             tournament_menu_choice = tournament_view.display_tournament_option_menu()
+
                             match tournament_menu_choice:
                                 case "1":
                                     main_view.display_all_players(tournament.players_list)
