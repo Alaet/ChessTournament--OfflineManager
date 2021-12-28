@@ -69,7 +69,7 @@ class MenuController:
                         deserialized_tournaments.append(d_tourn)
                     detail_choices = main_view.prompt_for_match_detail(deserialized_tournaments)
                     if -1 in detail_choices:
-                        pass
+                        continue
                     else:
                         result = tournament_controller.evaluate_match(deserialized_tournaments[detail_choices[0]].
                                                                       rounds[detail_choices[1]]
@@ -120,15 +120,29 @@ class MenuController:
                     match report_menu_choice:
                         case "1":
                             serialized_players = players_table.all()
-                            deserialized_new_tournament_players = deserialized_new_tournament_players(
+                            deserialized_new_tournament_players = deserialized_tournament_players(
                                 serialized_players)
                             main_view.display_all_players(deserialized_new_tournament_players)
                         case "2":
-                            main_view.display_all_tournaments(all_tournaments)
+                            serialized_tournaments = tournament_table.all()
+                            deserialized_tournaments = []
+
+                            for t_serial in serialized_tournaments:
+                                d_tourn_player = deserialized_tournament_players(t_serial['players_list'])
+
+                                d_tourn = deserialize_tournament(t_serial)
+
+                                d_tourn.players_list = d_tourn_player
+
+                                deserialized_tournaments.append(d_tourn)
+                            main_view.display_all_tournaments(deserialized_tournaments)
                             t_choice = input()
-                            for x, t in enumerate(all_tournaments):
-                                if int(t_choice) == all_tournaments.index(all_tournaments[x]):
-                                    tournament = all_tournaments[int(t_choice)]
+                            if t_choice == "" or t_choice.isalpha():
+                                main_view.display_invalid_choice()
+                                continue
+                            for x, t in enumerate(deserialized_tournaments):
+                                if int(t_choice) == deserialized_tournaments.index(deserialized_tournaments[x]):
+                                    tournament = deserialized_tournaments[int(t_choice)]
                             tournament_menu_choice = tournament_view.display_tournament_option_menu()
                             match tournament_menu_choice:
                                 case "1":

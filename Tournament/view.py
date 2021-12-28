@@ -6,15 +6,19 @@ class TournamentView:
 
     def display_tournament_rounds(self, tournament):
         for round in tournament.rounds:
-            print(round.round_name + " - " + round.match_history[0].match_info[0][0].name + " contre " +
-                  round.match_history[0].match_info[1][0].name + "\n")
+            print(round['round_name'] + "\n" + "Début : " + str(round['round_starting_date']) + "\n" + "Fin   : " +
+                  str(round[
+                'round_ending_date']))
         input()
 
     def display_tournament_matches(self, tournament):
         for round in tournament.rounds:
-            for match in round.match_history:
-                print(match.match_info[0][0].name + " contre " + match.match_info[1][
-                    0].name + "\n")
+            print(round['round_name'] + " ")
+            for match in round['match_history']:
+                print(match['match_info'][0][0]['name'] + " contre " + match[
+                    'match_info'][1][0]['name'] + "\n")
+                print("score : " + str(match['match_info'][0][0]['score']) + " / " + str(match[
+                    'match_info'][1][0]['score']) + "\n")
         input()
 
     def display_tournament_option_menu(self):

@@ -144,12 +144,12 @@ class View:
             if choice == "N":
                 sorted_by_name = sorted(all_players, key=lambda x: x.name)
                 for player in sorted_by_name:
-                    print("Nom :" + player.name + " - Rang :" + str(player.rank) + "\n")
+                    print("Nom : " + player.name + " - Rang : " + str(player.rank) + "\n")
                 break
             elif choice == "R":
                 sorted_by_rank = sorted(all_players, key=lambda x: x.rank)
                 for player in sorted_by_rank:
-                    print("Nom :" + player.name + " - Rang :" + str(player.rank) + "\n")
+                    print("Rang : " + str(player.rank) + " - Nom : " + player.name + "\n")
                 break
             else:
                 View.display_invalid_choice(self)

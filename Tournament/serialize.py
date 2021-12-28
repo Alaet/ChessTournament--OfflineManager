@@ -13,7 +13,8 @@ def serialize_tournament(new_tournament, current_round):
         'round_count': new_tournament.round_count,
         'players_list': new_tournament.players_list,
         'description': new_tournament.description,
-        'rounds': current_round
+        'rounds': current_round,
+        'close': new_tournament.close
     }
     return serialized_tournament
 
@@ -31,6 +32,7 @@ def deserialize_tournament(new_tournament):
     deserialized_tournament.rounds = rounds
     deserialized_tournament.match_count = new_tournament['match_count']
     deserialized_tournament.round_count = new_tournament['round_count']
+    deserialized_tournament.close = new_tournament['close']
 
     return deserialized_tournament
 
