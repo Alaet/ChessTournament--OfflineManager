@@ -9,7 +9,8 @@ from .view import PlayerView
 
 class TestPlayerModel(unittest.TestCase):
 
-    def create_player(self):
+    @staticmethod
+    def create_player():
         print("Creation d'une liste de 8 joueurs aléatoirement")
         players_list = []
         for x in range(0, 8):

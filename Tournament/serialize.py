@@ -24,7 +24,7 @@ def deserialize_tournament(new_tournament):
     place = new_tournament['place']
     date = new_tournament['date']
     time_mode = new_tournament['time_mode']
-    players_list = deserialized_tournament_players(new_tournament['players_list'])
+    players_list = deserialized_every_players(new_tournament['players_list'])
     description = new_tournament['description']
     rounds = new_tournament['rounds']
     deserialized_tournament = Tournament(name, place, date, time_mode, players_list, description)
@@ -36,8 +36,8 @@ def deserialize_tournament(new_tournament):
     return deserialized_tournament
 
 
-def deserialized_tournament_players(serialized_player):
-    all_players = []
+def deserialized_every_players(serialized_player):
+    all_players_deserialized = []
     for x, player in enumerate(serialized_player):
         name = serialized_player[x]['name']
         lastname = serialized_player[x]['lastname']
@@ -48,8 +48,8 @@ def deserialized_tournament_players(serialized_player):
         score = serialized_player[x]['score']
         deserialized_player = Player(name=name, lastname=lastname, birthdate=birthdate, gender=gender,
                                      rank=rank, player_id=id_deserialized, score=score)
-        all_players.append(deserialized_player)
-    return all_players
+        all_players_deserialized.append(deserialized_player)
+    return all_players_deserialized
 
 
 def serialize_tournament_players(tournament_player):

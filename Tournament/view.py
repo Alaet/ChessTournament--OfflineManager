@@ -5,14 +5,12 @@ class TournamentView:
                                         "3. Liste de tous les matches"]
 
     @staticmethod
-    def display_tournament_rounds(tournament):
-        for current_round in tournament.rounds:
-            print(current_round['round_name'] + "\n" + "Début : " + str(current_round['round_starting_date']) + "\n" + "Fin   : " +
-                  str(current_round['round_ending_date']))
-        input()
-
-    @staticmethod
     def display_tournament_matches(tournament):
+        """
+        Display every match for every round for given tournament in parameter
+        :param tournament: dict(tournament_data)
+        :return:
+        """
         for current_round in tournament.rounds:
             print(current_round['round_name'] + " ")
             for match in current_round['match_history']:
@@ -62,6 +60,10 @@ class TournamentView:
 
     @staticmethod
     def prompt_for_tournament_name():
+        """
+        Prompt for tournament name, break to main menu
+        :return: str(tournament_name)
+        """
 
         name = input("Entrez le nom du tournoi    ( 0 - Menu principal )\n")
         while not name.isalpha() or name == "":
@@ -73,6 +75,10 @@ class TournamentView:
 
     @staticmethod
     def prompt_for_tournament_place():
+        """
+        Prompt for tournament place, break to main menu
+        :return: str(tournament_place)
+        """
 
         place = input("Entrez le lieu du tournoi\n")
         while not place.isalpha():
@@ -84,26 +90,34 @@ class TournamentView:
 
     @staticmethod
     def prompt_for_tournament_date():
+        """
+        Prompt for tournament date, break to main menu
+        :return: str(tournament_date)
+        """
         import dateutil.parser
         is_date_valid = False
-        birthdate = []
+        tournament_date = []
         while not is_date_valid:
-            birthdate = input("Entrez la date du tournoi (au format JJ/MM/YYYY)\n")
+            tournament_date = input("Entrez la date du tournoi (au format JJ/MM/YYYY)\n")
             try:
-                if 7 <= len(birthdate) <= 10:
+                if 7 <= len(tournament_date) <= 10:
 
-                    birthdate = dateutil.parser.parse(birthdate, dayfirst=True)
-                    birthdate = birthdate.strftime('%d-%m-%Y')
+                    tournament_date = dateutil.parser.parse(tournament_date, dayfirst=True)
+                    tournament_date = tournament_date.strftime('%d-%m-%Y')
                     is_date_valid = True
                 else:
                     print("Le format de la date du tournoi n'est pas reconnue")
             except dateutil.parser.ParserError:
                 print("Le format de la date du tournoi n'est pas reconnue")
 
-        return birthdate
+        return tournament_date
 
     @staticmethod
     def prompt_for_time_mode():
+        """
+        Prompt for tournament date, break to main menu
+        :return: str(int(time_mode))
+        """
         time_mode = type(input)
         print("Entrez le type de partie    ( 0 - Menu principal )\n1. Bullet\n2. Blitz\n3. Coup rapide\n")
         while not time_mode == "1" or not time_mode == "2" or not time_mode == "3":
@@ -122,5 +136,9 @@ class TournamentView:
 
     @staticmethod
     def prompt_for_description():
+        """
+        Prompt for tournament date, break to main menu
+        :return: str(tournament_description)
+        """
         description = input("Ajouter un commentaire sur le tournoi :\n\n")
         return description

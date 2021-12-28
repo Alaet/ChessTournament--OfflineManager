@@ -11,11 +11,11 @@ class TestTournamentController(unittest.TestCase):
 
     def test_tournament_creation(self):
         print("Creation d'un tournoi à partir d'une liste de 8 joueurs aléatoire")
-        players = TestPlayerModel.create_player(self=TestPlayerModel)
+        players = TestPlayerModel.create_player()
         tournament = TournamentController.create_tournament(TournamentController(TournamentView), all_players=players)
         assert tournament
         return tournament
 
     def display_players(self):
-        players = TestPlayerModel.create_player(self=TestPlayerModel)
-        View.display_all_players(View, players)
+        players = TestPlayerModel.create_player()
+        View.display_all_players(players)

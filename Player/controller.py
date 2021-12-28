@@ -6,7 +6,6 @@ class PlayerController(object):
 
     def __init__(self, view):
         self.view = view
-        self.model = object
         self.player_id = -1
 
     def create_player(self):
@@ -22,9 +21,9 @@ class PlayerController(object):
         lastname = self.view.prompt_for_player_lastname()
         gender = self.view.prompt_for_player_gender()
         birthdate = self.view.prompt_for_player_birthdate()
-        id = self.player_id
+        new_player_id = self.player_id
         score = 0
-        new_player = Player(name, lastname, birthdate, gender, rank, score, player_id=id)
+        new_player = Player(name, lastname, birthdate, gender, rank, score, player_id=new_player_id)
         serialized_player = serialize_player(new_player)
 
         return serialized_player

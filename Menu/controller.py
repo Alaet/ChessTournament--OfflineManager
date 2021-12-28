@@ -5,7 +5,7 @@ from Player.controller import PlayerController
 from Player.serialize import serialize_player
 from Player.view import PlayerView
 from Tournament.controller import TournamentController
-from Tournament.serialize import serialize_tournament, deserialized_tournament_players, \
+from Tournament.serialize import serialize_tournament, deserialized_every_players, \
     serialize_tournament_players,  deserialize_tournament
 from Tournament.view import TournamentView
 from Round.controller import RoundController
@@ -14,7 +14,7 @@ from Round.view import RoundView
 
 from tinydb import TinyDB, Query
 
-db = TinyDB('db.json')
+db = TinyDB('db.json', indent=4)
 players_table = db.table('players')
 tournament_table = db.table('tournaments')
 
@@ -41,9 +41,9 @@ class MenuController:
                         players_table.insert(new_player)
 
                 case "2":
-                    serialized_players = players_table.all()
-                    deserialized_new_tournament_players = deserialized_tournament_players(serialized_players)
-                    new_tournament = tournament_controller.create_tournament(deserialized_new_tournament_players)
+                    every_serialized_players = players_table.all()
+                    every_deserialized_players = deserialized_every_players(every_serialized_players)
+                    new_tournament = tournament_controller.create_tournament(every_deserialized_players)
                     first_round = round_controller.generate_round(new_tournament)
                     new_tournament.rounds.append(first_round)
 
@@ -57,15 +57,15 @@ class MenuController:
                     serialized_tournaments = tournament_table.all()
                     deserialized_tournaments = []
 
-                    for t_serial in serialized_tournaments:
+                    for tournament_serialized in serialized_tournaments:
 
-                        d_tourn_player = deserialized_tournament_players(t_serial['players_list'])
+                        deserialized_t_players = deserialized_every_players(tournament_serialized['players_list'])
 
-                        d_tourn = deserialize_tournament(t_serial)
+                        current_deserialize_tournament = deserialize_tournament(tournament_serialized)
 
-                        d_tourn.players_list = d_tourn_player
+                        current_deserialize_tournament.players_list = deserialized_t_players
 
-                        deserialized_tournaments.append(d_tourn)
+                        deserialized_tournaments.append(current_deserialize_tournament)
                     detail_choices = main_view.prompt_for_match_detail(deserialized_tournaments)
                     if -1 in detail_choices:
                         continue
@@ -110,37 +110,38 @@ class MenuController:
                     except AttributeError:
                         pass
 
-                    t_doc = tournament_table.get(doc_id=detail_choices[0]+1)
+                    tournament_doc = tournament_table.get(doc_id=detail_choices[0]+1)
 
-                    tournament_table.upsert(tinydb.database.Document(s_tournament, doc_id=t_doc.doc_id))
+                    tournament_table.upsert(tinydb.database.Document(s_tournament, doc_id=tournament_doc.doc_id))
 
                 case "4":
                     report_menu_choice = main_view.display_reports_menu()
                     match report_menu_choice:
                         case "1":
-                            serialized_players = players_table.all()
-                            deserialized_new_tournament_players = deserialized_tournament_players(
-                                serialized_players)
-                            main_view.display_all_players(deserialized_new_tournament_players)
+                            every_serialized_players = players_table.all()
+                            every_deserialized_players = deserialized_every_players(
+                                every_serialized_players)
+                            main_view.display_all_players(every_deserialized_players)
                         case "2":
                             serialized_tournaments = tournament_table.all()
                             deserialized_tournaments = []
 
-                            for t_serial in serialized_tournaments:
-                                d_tourn_player = deserialized_tournament_players(t_serial['players_list'])
+                            for tournament_serialized in serialized_tournaments:
+                                deserialized_t_players = deserialized_every_players(tournament_serialized
+                                                                                    ['players_list'])
 
-                                d_tourn = deserialize_tournament(t_serial)
+                                current_deserialize_tournament = deserialize_tournament(tournament_serialized)
 
-                                d_tourn.players_list = d_tourn_player
+                                current_deserialize_tournament.players_list = deserialized_t_players
 
-                                deserialized_tournaments.append(d_tourn)
+                                deserialized_tournaments.append(current_deserialize_tournament)
                             main_view.display_all_tournaments(deserialized_tournaments)
                             t_choice = input()
                             if t_choice == "" or t_choice.isalpha():
                                 main_view.display_invalid_choice()
                                 continue
                             tournament = None
-                            for x, t in enumerate(deserialized_tournaments):
+                            for x, tournament in enumerate(deserialized_tournaments):
                                 if int(t_choice) == deserialized_tournaments.index(deserialized_tournaments[x]):
                                     tournament = deserialized_tournaments[int(t_choice)]
                             tournament_menu_choice = tournament_view.display_tournament_option_menu()
@@ -149,7 +150,7 @@ class MenuController:
                                 case "1":
                                     main_view.display_all_players(tournament.players_list)
                                 case "2":
-                                    tournament_view.display_tournament_rounds(tournament)
+                                    round_view.display_tournament_rounds(tournament)
                                 case "3":
                                     tournament_view.display_tournament_matches(tournament)
                 case "0":

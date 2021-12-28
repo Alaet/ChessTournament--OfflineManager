@@ -10,7 +10,6 @@ class PlayerView:
             name = input("\n\nEntrez le prénom du joueur    ( 0 - Menu principal )\n")
             if name == "0":
                 break
-
         return name
 
     @staticmethod
@@ -20,7 +19,6 @@ class PlayerView:
         while not lastname.isalpha():
             print("\n\nLe format du nom n'est pas reconnu\n\n")
             lastname = input("\n\nEntrez le nom du joueur\n")
-
         return lastname
 
     @staticmethod
@@ -30,7 +28,6 @@ class PlayerView:
         while not (gender == "Female" or gender == "F") and not (gender == "Male" or gender == "M"):
             print("Le format du genre n'est pas reconnu")
             gender = input("Entrez le genre : Male / Female\n")
-
         return gender
 
     @staticmethod
@@ -40,14 +37,13 @@ class PlayerView:
         while not rank.isnumeric() or rank == "" or rank == "0":
             print("\n\nLe format du rang n'est pas reconnu\n\n")
             rank = input("Entrez le rang actuel\n")
-
         return int(rank)
 
     @staticmethod
     def prompt_for_player_birthdate():
 
         is_date_valid = False
-
+        birthdate = None
         while not is_date_valid:
             import dateutil.parser
             birthdate = input("Entrez la date de naissance (au format JJ/MM/YYYY)\n")
