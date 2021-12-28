@@ -57,8 +57,8 @@ class View:
         :return: user round choice - round_choice
         """
         print("Quel round ?    ( 0 - Menu principal )")
-        for round in tournament.rounds:
-            print(str(round.round_name) + "\n")
+        for x, round in enumerate(tournament.rounds):
+            print(str(round['round_name']) + "\n")
         round_choice = input()
         return round_choice
 
@@ -70,13 +70,12 @@ class View:
         """
 
         print("Quel match ?    ( 0 - Menu principal )")
-
         for x, match in enumerate(matches):
-            if match.evaluated:
+            if match['evaluated']:
                 print(str(x+1) + ".Match terminé\n")
             else:
-                print(str(x+1) + "." + str(match.match_info[0][0].name) + " contre " +
-                      str(match.match_info[1][0].name) + "\n")
+                print(str(x+1) + "." + str(match['match_info'][0][0]['name']) + " contre " +
+                      str(match['match_info'][1][0]['name']) + "\n")
         match_choice = input()
         return match_choice
 
@@ -86,38 +85,37 @@ class View:
         :param tournaments: list(all_tournaments)
         :return: [tournament_choice, round_choice, match_choice]
         """
-
         main_menu = [-1, -1, -1]
         try:
 
-            choice = self.display_tournaments(tournaments)
-            if tournaments[int(choice) - 1].close:
+            t_choice = self.display_tournaments(tournaments)
+            if tournaments[int(t_choice) - 1].close:
                 print("Tournoi TERMINE")
                 return main_menu
-            if str(choice) == "0":
+            if str(t_choice) == "0":
                 return main_menu
-            while not (choice.isnumeric()) and not (choice == ""):
+            while not (t_choice.isnumeric()) and not (t_choice == ""):
                 self.display_invalid_choice()
-                choice = self.display_tournaments(tournaments)
-            choice = int(choice)
+                t_choice = self.display_tournaments(tournaments)
+            t_choice = int(t_choice)
 
-            round_choice = self.display_rounds(tournaments[choice - 1])
-            if str(round_choice) == "0":
+            r_choice = self.display_rounds(tournaments[t_choice - 1])
+            if str(r_choice) == "0":
                 return main_menu
-            while not (round_choice.isnumeric()) and not (choice == ""):
+            while not (r_choice.isnumeric()) and not (r_choice == ""):
                 self.display_invalid_choice()
-                round_choice = self.display_rounds(tournaments[choice - 1])
-            round_choice = int(round_choice)
+                r_choice = self.display_rounds(tournaments[t_choice - 1])
+            r_choice = int(r_choice)
 
-            match_choice = self.display_matches(tournaments[choice - 1].rounds[round_choice - 1].match_history)
-            if not tournaments[choice - 1].rounds[round_choice - 1].match_history[int(match_choice) - 1].evaluated:
-                if str(match_choice) == "0":
+            m_choice = self.display_matches(tournaments[t_choice - 1].rounds[r_choice - 1]['match_history'])
+            if not tournaments[t_choice - 1].rounds[r_choice - 1]['match_history'][int(m_choice) - 1]['evaluated']:
+                if str(m_choice) == "0":
                     return main_menu
-                while not (match_choice.isnumeric()) and not (choice == ""):
+                while not (m_choice.isnumeric()) and not (m_choice == ""):
                     self.display_invalid_choice()
-                    match_choice = self.display_matches(tournaments[choice - 1].rounds[round_choice - 1].match_history)
-                match_choice = int(match_choice)
-                return [choice - 1, round_choice - 1, match_choice - 1]
+                    m_choice = self.display_matches(tournaments[t_choice - 1].rounds[r_choice - 1]['match_history'])
+                m_choice = int(m_choice)
+                return [t_choice - 1, r_choice - 1, m_choice - 1]
             else:
                 print("\n\nMatch terminé, veuillez en choisir un autre\n\n")
                 return main_menu
