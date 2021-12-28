@@ -1,6 +1,5 @@
 from .model import Tournament
 from Player.model import Player
-from Round.serialize import deserialize_all_rounds
 
 
 def serialize_tournament(new_tournament, current_round):
@@ -66,24 +65,3 @@ def serialize_tournament_players(tournament_player):
             'score': player.score
         })
     return serialized_players
-
-
-def deserialize_all_tournament(all_tournament_serialized):
-    all_tournament_deserialized = []
-
-    for x, tournament in enumerate(all_tournament_serialized):
-        name = all_tournament_serialized[x]['name']
-        place = all_tournament_serialized[x]['place']
-        date = all_tournament_serialized[x]['date']
-        time_mode = all_tournament_serialized[x]['time_mode']
-        players_list = deserialized_tournament_players(all_tournament_serialized[x]['players_list'])
-        description = all_tournament_serialized[x]['description']
-        deserialized_tournament = Tournament(name, place, date, time_mode, players_list, description)
-
-        deserialized_rounds = deserialize_all_rounds(all_tournament_serialized[x]['rounds'])
-        deserialized_tournament.rounds.append(deserialized_rounds)
-        deserialized_tournament.match_count = all_tournament_serialized[x]['match_count']
-        deserialized_tournament.round_count = all_tournament_serialized[x]['round_count']
-
-        all_tournament_deserialized.append(deserialized_tournament)
-    return all_tournament_deserialized

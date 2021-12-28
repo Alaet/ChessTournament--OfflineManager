@@ -4,19 +4,19 @@ class TournamentView:
         self.menu_options_tournament = ["1. Liste de tous les joueurs", "2. Liste de tous les tours",
                                         "3. Liste de tous les matches"]
 
-    def display_tournament_rounds(self, tournament):
-        for round in tournament.rounds:
-            print(round['round_name'] + "\n" + "Début : " + str(round['round_starting_date']) + "\n" + "Fin   : " +
-                  str(round[
-                'round_ending_date']))
+    @staticmethod
+    def display_tournament_rounds(tournament):
+        for current_round in tournament.rounds:
+            print(current_round['round_name'] + "\n" + "Début : " + str(current_round['round_starting_date']) + "\n" + "Fin   : " +
+                  str(current_round['round_ending_date']))
         input()
 
-    def display_tournament_matches(self, tournament):
-        for round in tournament.rounds:
-            print(round['round_name'] + " ")
-            for match in round['match_history']:
-                print(match['match_info'][0][0]['name'] + " contre " + match[
-                    'match_info'][1][0]['name'] + "\n")
+    @staticmethod
+    def display_tournament_matches(tournament):
+        for current_round in tournament.rounds:
+            print(current_round['round_name'] + " ")
+            for match in current_round['match_history']:
+                print(match['match_info'][0][0]['name'] + " contre " + match['match_info'][1][0]['name'])
                 print("score : " + str(match['match_info'][0][0]['score']) + " / " + str(match[
                     'match_info'][1][0]['score']) + "\n")
         input()
