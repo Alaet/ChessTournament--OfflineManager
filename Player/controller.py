@@ -1,4 +1,5 @@
 from .model import Player
+from .serialize import serialize_player
 
 
 class PlayerController(object):
@@ -22,8 +23,9 @@ class PlayerController(object):
         gender = self.view.prompt_for_player_gender()
         birthdate = self.view.prompt_for_player_birthdate()
         id = self.player_id
-        new_player = Player(name, lastname, birthdate, gender, rank, player_id=id)
-        serialized_player = self.serialize_player(new_player)
+        score = 0
+        new_player = Player(name, lastname, birthdate, gender, rank, score, player_id=id)
+        serialized_player = serialize_player(new_player)
 
         return serialized_player
 
@@ -31,15 +33,3 @@ class PlayerController(object):
         for player in tournament_players:
             self.view.display_new_player_rank(player)
             player.update_rank(self.view.prompt_for_new_rank())
-
-    @staticmethod
-    def serialize_player(new_player):
-        serialized_player = {
-            'name': new_player.name,
-            'lastname': new_player.lastname,
-            'birthdate': new_player.birthdate,
-            'gender': new_player.gender,
-            'rank': new_player.rank,
-            'id': new_player.id
-        }
-        return serialized_player

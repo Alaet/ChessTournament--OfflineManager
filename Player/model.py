@@ -1,13 +1,13 @@
 class Player(object):
 
-    def __init__(self, name, lastname, birthdate, gender, rank, player_id=int):
+    def __init__(self, name, lastname, birthdate, gender, rank, score=0, player_id=int):
         self.name = name
         self.lastname = lastname
         self.birthdate = birthdate
         self.gender = gender
         self.rank = rank
         self.id = player_id
-        self.score: float = 0
+        self.score = score
 
     def add_score(self, points):
         """
