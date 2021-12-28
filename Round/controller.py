@@ -1,7 +1,6 @@
 import datetime
 from Match.controller import MatchController
-
-from Round.model import Round
+from .model import Round
 
 
 class RoundController(object):
@@ -18,26 +17,15 @@ class RoundController(object):
 
         sorted_list = self.sort_players_as_dict(tournament.players_list)
         versus = self.generate_pair_from_id(sorted_list)
-        matches = MatchController.generate_match_list(MatchController, tournament.players_list, versus)
-        new_round = Round(tournament, matches)
+        matches = MatchController.generate_match_list(tournament.players_list, versus)
+        new_round = Round(matches)
 
         new_round.round_name = "Round " + str(tournament.round_count)
         tournament.round_count += 1
 
         new_round.round_starting_date = datetime.datetime.now()
         new_round.round_starting_date = new_round.round_starting_date.strftime("%Y-%m-%d %H:%M:%S")
-        serialize_round = self.serialize_round(new_round)
-        return serialize_round
-
-    @staticmethod
-    def serialize_round(new_round):
-        serialize_round = {
-            'round_name': new_round.round_name,
-            'round_starting_date': new_round.round_starting_date,
-            'round_ending_date': new_round.round_ending_date,
-            'match_history': new_round.match_history
-        }
-        return serialize_round
+        return new_round
 
     @staticmethod
     def sort_players_as_dict(players):
@@ -49,13 +37,11 @@ class RoundController(object):
                       "player_data" : dict{int, int, int, list}
                       }
         """
-
         players_sorted = []
-
         for x, player in enumerate(players):
-
             player_data = {"player": player,
-                           "player_data": {"id": player.id, "score": player.score, "rank": player.rank, "history": []}
+                           "player_data": {"id": player['id'], "score": player['score'], "rank": player['rank'],
+                                           "history": []}
                            }
             players_sorted.append(player_data)
 

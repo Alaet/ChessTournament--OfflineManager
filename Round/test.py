@@ -25,4 +25,3 @@ class TestRoundController(unittest.TestCase):
         match_tournament = round.match_history
         for match in match_tournament:
             TournamentController.evaluate_match(match, tournament)
-
