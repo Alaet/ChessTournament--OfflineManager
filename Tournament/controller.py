@@ -1,6 +1,5 @@
 from .model import Tournament
-from Player.model import Player
-
+from .serialize import serialize_tournament_players
 
 
 class TournamentController(object):
@@ -8,25 +7,23 @@ class TournamentController(object):
     def __init__(self, view):
         self.view = view
 
-    def create_tournament(self, serialized_player):
+    def create_tournament(self, all_players):
         """
         Prompt for tournament details, and players from list(all_players) of object(Player) to pick
         to return an object(Tournament)
-        :param serialized_player: TinyDB list(Document(Player_data))
+        :param all_players: list(object(Player))
         :return: object(Tournament)
         """
-        all_players = self.deserialized_tournament_players(serialized_player)
         name = self.view.prompt_for_tournament_name()
         place = self.view.prompt_for_tournament_place()
         date = self.view.prompt_for_tournament_date()
         time_mode = self.view.prompt_for_time_mode()
         players = self.view.pick_players_for_tournament(all_players)
-        serialized_players = self.serialize_tournament_players(players)
+        serialized_players = serialize_tournament_players(players)
         description = self.view.prompt_for_description()
         new_tournament = Tournament(name, place, date, time_mode, serialized_players, description)
 
-        serialized_tournament = self.serialize_tournament(new_tournament)
-        return serialized_tournament
+        return new_tournament
 
     @staticmethod
     def evaluate_match(match, tournament):
@@ -37,29 +34,30 @@ class TournamentController(object):
         :param tournament: object(Tournament)
         :return: int(tournament.match_count)
         """
-        if tournament.match_count == 4:
-            tournament.match_count = 0
+        if tournament.match_count < 4:
+            tournament.match_count += 1
+        else:
+            tournament.match_count = 1
 
-        tournament.match_count += 1
-        print("Match " + str(tournament.match_count) + "    ( 0 - Menu principal )\n1." + str(match.match_info[0][0]
-                                                                                              .name) + "\n\n2."
-              + str(match.match_info[1][0].name) + "\n3. Match nul")
+        print("Match " + str(tournament.match_count) + "    ( 0 - Menu principal )\n1." + str(match['match_info'][0][0]
+                                                                                              ['name']) + "\n\n2."
+              + str(match['match_info'][1][0]['name']) + "\n3. Match nul")
         result = input()
         if result == "0":
             tournament.match_count -= 1
             return result
         elif result == "1":
-            match.match_info[0][0].score += 1
-            match.evaluated = True
+            match['match_info'][0][0]['score'] += 1
+            match['evaluated'] = True
 
         elif result == "2":
-            match.match_info[1][0].score += 1
-            match.evaluated = True
+            match['match_info'][1][0]['score'] += 1
+            match['evaluated'] = True
 
         elif result == "3":
-            match.match_info[0][0].score += (1 / 2)
-            match.match_info[1][0].score += (1 / 2)
-            match.evaluated = True
+            match['match_info'][0][0]['score'] += (1 / 2)
+            match['match_info'][1][0]['score'] += (1 / 2)
+            match['evaluated'] = True
         else:
             print("******* Choix invalide *******")
             tournament.match_count -= 1
@@ -67,68 +65,15 @@ class TournamentController(object):
         return tournament.match_count
 
     @staticmethod
-    def cloture_round(round):
+    def cloture_round(current_round):
 
         if input("Clôturer le round ?  O/N\n") == "O" or "N":
             import datetime
-            round.round_ending_date = datetime.datetime.now()
-            round.round_ending_date = round.round_ending_date.strftime("%Y-%m-%d %H:%M:%S")
-            print(round.round_ending_date)
+            current_round['round_ending_date'] = datetime.datetime.now()
+            current_round['round_ending_date'] = current_round['round_ending_date'].strftime("%Y-%m-%d %H:%M:%S")
+            print(current_round['round_ending_date'])
 
     @staticmethod
     def reset_score(all_players):
         for player in all_players:
             player.score = 0
-
-    @staticmethod
-    def deserialized_tournament_players(serialized_player):
-        all_players = []
-        for x, player in enumerate(serialized_player):
-            name = serialized_player[x]['name']
-            lastname = serialized_player[x]['lastname']
-            birthdate = serialized_player[x]['birthdate']
-            gender = serialized_player[x]['gender']
-            rank = serialized_player[x]['rank']
-            id = x
-            deserialized_player = Player(name=name, lastname=lastname, birthdate=birthdate, gender=gender,
-                                         rank=rank, player_id=id)
-            all_players.append(deserialized_player)
-        return all_players
-
-    def serialize_tournament_players(self, tournament_player):
-        serialized_players = []
-        for player in tournament_player:
-            serialized_players.append({
-                'name': player.name,
-                'lastname': player.lastname,
-                'birthdate': player.birthdate,
-                'gender': player.gender,
-                'rank': player.rank,
-                'id': player.id
-            })
-        return serialized_players
-
-    @staticmethod
-    def serialize_tournament(new_tournament):
-        serialized_tournament = {
-            'name': new_tournament.name,
-            'place': new_tournament.place,
-            'date': new_tournament.date,
-            'time_mode': new_tournament.time_mode,
-            'players_list': new_tournament.players_list,
-            'description': new_tournament.description,
-            'rounds': []
-        }
-        return serialized_tournament
-
-    def deserialize_tournament(self, new_tournament):
-
-        name = new_tournament['name']
-        place = new_tournament['place']
-        date = new_tournament['date']
-        time_mode = new_tournament['time_mode']
-        players_list = self.deserialized_tournament_players(new_tournament['players_list'])
-        description = new_tournament['description']
-        deserialized_tournament = Tournament(name, place, date, time_mode, players_list, description)
-
-        return deserialized_tournament

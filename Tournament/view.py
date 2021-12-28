@@ -50,6 +50,7 @@ class TournamentView:
                     picked_player.append(player)
                     print("Joueur " + str(x) + " : " + player.name + " ajouté au tournoi")
                     x += 1
+                # GERER ID NON PRESENT DANS LA LISTE
             if not choice.isnumeric() or choice == "":
                 print("Id non reconnu")
 
@@ -81,7 +82,7 @@ class TournamentView:
     def prompt_for_tournament_date():
         import dateutil.parser
         is_date_valid = False
-
+        birthdate = []
         while not is_date_valid:
             birthdate = input("Entrez la date du tournoi (au format JJ/MM/YYYY)\n")
             try:
