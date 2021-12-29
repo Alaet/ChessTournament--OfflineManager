@@ -1,22 +1,14 @@
-import tinydb.database
+import Database.controller
 
 from Menu.view import View
 from Player.controller import PlayerController
-from Player.serialize import serialize_player
 from Player.view import PlayerView
 from Tournament.controller import TournamentController
-from Tournament.serialize import serialize_tournament, deserialized_every_players, \
-    serialize_tournament_players,  deserialize_tournament
+from Tournament.serialize import serialize_tournament, deserialized_every_players, serialize_tournament_players
 from Tournament.view import TournamentView
 from Round.controller import RoundController
 from Round.serialize import serialize_round
 from Round.view import RoundView
-
-from tinydb import TinyDB, Query
-
-db = TinyDB('db.json', indent=4)
-players_table = db.table('players')
-tournament_table = db.table('tournaments')
 
 
 class MenuController:
@@ -29,7 +21,7 @@ class MenuController:
         player_view = PlayerView()
         player_controller = PlayerController(player_view)
         tournament_view = TournamentView()
-        tournament_controller = TournamentController(tournament_view)
+        t_controller = TournamentController(tournament_view)
         round_view = RoundView()
         round_controller = RoundController(round_view)
         while run:
@@ -38,12 +30,12 @@ class MenuController:
                 case "1":
                     new_player = player_controller.create_player()
                     if new_player is not None:
-                        players_table.insert(new_player)
+                        Database.controller.insert_player(new_player)
 
                 case "2":
-                    every_serialized_players = players_table.all()
+                    every_serialized_players = Database.controller.get_all_players()
                     every_deserialized_players = deserialized_every_players(every_serialized_players)
-                    new_tournament = tournament_controller.create_tournament(every_deserialized_players)
+                    new_tournament = t_controller.create_tournament(every_deserialized_players)
                     first_round = round_controller.generate_round(new_tournament)
                     new_tournament.rounds.append(first_round)
 
@@ -51,90 +43,70 @@ class MenuController:
                     serialized_tournament = serialize_tournament(new_tournament, serialized_round)
 
                     if new_tournament is not None:
-                        tournament_table.insert(serialized_tournament)
+                        Database.controller.insert_player(serialized_tournament)
 
                 case "3":
-                    serialized_tournaments = tournament_table.all()
-                    deserialized_tournaments = []
-
-                    for tournament_serialized in serialized_tournaments:
-
-                        deserialized_t_players = deserialized_every_players(tournament_serialized['players_list'])
-
-                        current_deserialize_tournament = deserialize_tournament(tournament_serialized)
-
-                        current_deserialize_tournament.players_list = deserialized_t_players
-
-                        deserialized_tournaments.append(current_deserialize_tournament)
-                    detail_choices = main_view.prompt_for_match_detail(deserialized_tournaments)
-                    if -1 in detail_choices:
+                    every_serialized_tournaments = Database.controller.get_all_tournaments()
+                    deserialized_tournaments = Database.controller.deserialize_all_tournaments(
+                        every_serialized_tournaments)
+                    t_r_m_choices = main_view.prompt_for_match_detail(deserialized_tournaments)
+                    if -1 in t_r_m_choices:
                         continue
                     else:
-                        result = tournament_controller.evaluate_match(deserialized_tournaments[detail_choices[0]].
-                                                                      rounds[detail_choices[1]]
-                                                                      ['match_history'][detail_choices[2]],
-                                                                      deserialized_tournaments[detail_choices[0]])
+                        result = t_controller.evaluate_match(deserialized_tournaments[t_r_m_choices[0]].rounds[
+                                                                 t_r_m_choices[1]]['match_history'][t_r_m_choices[2]]
+                                                             , deserialized_tournaments[t_r_m_choices[0]])
 
                         if result == 4:
-                            if not deserialized_tournaments[detail_choices[0]].round_count > deserialized_tournaments[
-                                   detail_choices[0]].turn:
+                            if not deserialized_tournaments[t_r_m_choices[0]].round_count > deserialized_tournaments[
+                                   t_r_m_choices[0]].turn:
 
-                                tournament_controller.cloture_round(deserialized_tournaments[detail_choices[0]].
-                                                                    rounds[detail_choices[1]])
+                                t_controller.cloture_round(deserialized_tournaments[t_r_m_choices[0]].
+                                                           rounds[t_r_m_choices[1]])
 
-                                deserialized_tournaments[detail_choices[0]].players_list = \
-                                    serialize_tournament_players(deserialized_tournaments[detail_choices[0]].
-                                                                 players_list)
+                                deserialized_tournaments[t_r_m_choices[0]].players_list = \
+                                    serialize_tournament_players(deserialized_tournaments[t_r_m_choices[
+                                        0]].players_list)
 
-                                next_round = round_controller.\
-                                    generate_round(deserialized_tournaments[detail_choices[0]])
+                                next_round = round_controller.generate_round(deserialized_tournaments[
+                                                                                  t_r_m_choices[0]])
 
                                 serialized_round = serialize_round(next_round)
-                                deserialized_tournaments[detail_choices[0]].rounds.insert(len(
-                                    deserialized_tournaments[detail_choices[0]].rounds), serialized_round)
+                                deserialized_tournaments[t_r_m_choices[0]].rounds.insert(len(
+                                    deserialized_tournaments[t_r_m_choices[0]].rounds), serialized_round)
 
                             else:
-                                player_controller.update_rank(deserialized_tournaments[detail_choices[0]].players_list)
-                                for x, player in enumerate(deserialized_tournaments[detail_choices[0]].players_list):
-                                    User = Query()
-                                    db_player_update = serialize_player(player)
-                                    players_table.upsert(db_player_update, User.name == str(player.name))
-                                deserialized_tournaments[detail_choices[0]].close = True
-                                tournament_controller.reset_score(
-                                    deserialized_tournaments[detail_choices[0]].players_list)
+                                player_controller.update_rank(deserialized_tournaments[t_r_m_choices[0]].players_list)
 
-                    s_tournament = serialize_tournament(deserialized_tournaments[detail_choices[0]],
-                                                        deserialized_tournaments[detail_choices[0]].rounds)
+                                Database.controller.\
+                                    update_players_rank(deserialized_tournaments[t_r_m_choices[0]].players_list)
+
+                                deserialized_tournaments[t_r_m_choices[0]].close = True
+
+                                t_controller.reset_score(deserialized_tournaments[t_r_m_choices[0]].players_list)
+
+                    s_tournament = serialize_tournament(deserialized_tournaments[t_r_m_choices[0]],
+                                                        deserialized_tournaments[t_r_m_choices[0]].rounds)
                     try:
                         s_tournament['players_list'] = serialize_tournament_players(s_tournament['players_list'])
                     except AttributeError:
                         pass
 
-                    tournament_doc = tournament_table.get(doc_id=detail_choices[0]+1)
-
-                    tournament_table.upsert(tinydb.database.Document(s_tournament, doc_id=tournament_doc.doc_id))
+                    Database.controller.update_tournament(s_tournament, t_r_m_choices[0])
 
                 case "4":
                     report_menu_choice = main_view.display_reports_menu()
                     match report_menu_choice:
                         case "1":
-                            every_serialized_players = players_table.all()
+                            every_serialized_players = Database.controller.get_all_players()
                             every_deserialized_players = deserialized_every_players(
                                 every_serialized_players)
                             main_view.display_all_players(every_deserialized_players)
                         case "2":
-                            serialized_tournaments = tournament_table.all()
-                            deserialized_tournaments = []
+                            every_serialized_tournaments = Database.controller.get_all_tournaments()
+                            deserialized_tournaments = Database.controller.deserialize_all_tournaments(
+                                every_serialized_tournaments)
 
-                            for tournament_serialized in serialized_tournaments:
-                                deserialized_t_players = deserialized_every_players(tournament_serialized
-                                                                                    ['players_list'])
-
-                                current_deserialize_tournament = deserialize_tournament(tournament_serialized)
-
-                                current_deserialize_tournament.players_list = deserialized_t_players
-
-                                deserialized_tournaments.append(current_deserialize_tournament)
                             main_view.display_all_tournaments(deserialized_tournaments)
                             t_choice = input()
                             if t_choice == "" or t_choice.isalpha():
