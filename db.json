@@ -88,7 +88,7 @@
             "place": "ici",
             "date": "01-01-2001",
             "time_mode": "1",
-            "match_count": 4,
+            "match_count": 2,
             "round_count": 5,
             "players_list": [
                 {
@@ -550,7 +550,7 @@
                                         "gender": "M",
                                         "rank": 2,
                                         "id": 3,
-                                        "score": 0
+                                        "score": 1
                                     },
                                     0
                                 ],
@@ -567,7 +567,7 @@
                                     0
                                 ]
                             ],
-                            "evaluated": false
+                            "evaluated": true
                         },
                         {
                             "match_info": [
@@ -579,7 +579,7 @@
                                         "gender": "M",
                                         "rank": 3,
                                         "id": 1,
-                                        "score": 0
+                                        "score": 1
                                     },
                                     0
                                 ],
@@ -596,7 +596,7 @@
                                     0
                                 ]
                             ],
-                            "evaluated": false
+                            "evaluated": true
                         },
                         {
                             "match_info": [

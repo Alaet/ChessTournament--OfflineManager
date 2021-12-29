@@ -31,7 +31,8 @@ def get_all_tournaments():
     return tournament_table.all()
 
 
-def deserialize_all_tournaments(every_serialized_tournaments):
+def deserialize_all_tournaments():
+    every_serialized_tournaments = get_all_tournaments()
     deserialized_tournaments = []
 
     for tournament_serialized in every_serialized_tournaments:
