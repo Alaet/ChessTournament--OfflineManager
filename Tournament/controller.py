@@ -3,7 +3,6 @@ from .serialize import serialize_tournament_players
 
 
 class TournamentController(object):
-
     def __init__(self, view):
         self.view = view
 

@@ -2,7 +2,6 @@ from .model import Match
 
 
 class MatchController:
-
     @staticmethod
     def generate_match_list(sorted_list, versus):
         """
@@ -22,8 +21,8 @@ class MatchController:
 
         for match in versus:
             try:
-                opponents = [(sorted_list[match[0]], sorted_list[match[0]].score),
-                             (sorted_list[match[1]], sorted_list[match[1]].score)]
+                opponents = [(sorted_list[match[0]], sorted_list[match[0]].score), (sorted_list[match[1]],
+                                                                                    sorted_list[match[1]].score)]
             except AttributeError:
                 opponents = [(sorted_list[match[0]], sorted_list[match[0]]['score']),
                              (sorted_list[match[1]], sorted_list[match[1]]['score'])]

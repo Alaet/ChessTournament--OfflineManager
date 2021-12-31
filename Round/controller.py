@@ -4,7 +4,6 @@ from .model import Round
 
 
 class RoundController(object):
-
     def __init__(self, view):
         self.view = view
 

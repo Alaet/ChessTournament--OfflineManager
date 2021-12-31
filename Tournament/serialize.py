@@ -31,6 +31,7 @@ def deserialize_tournament(new_tournament):
     deserialized_tournament.rounds = rounds
     deserialized_tournament.match_count = new_tournament['match_count']
     deserialized_tournament.round_count = new_tournament['round_count']
+    deserialized_tournament.round_count = new_tournament.get('round_count', '')
     deserialized_tournament.close = new_tournament['close']
 
     return deserialized_tournament
@@ -44,7 +45,7 @@ def deserialized_every_players(serialized_player):
         birthdate = serialized_player[x]['birthdate']
         gender = serialized_player[x]['gender']
         rank = serialized_player[x]['rank']
-        id_deserialized = x
+        id_deserialized = serialized_player[x]['id']
         score = serialized_player[x]['score']
         deserialized_player = Player(name=name, lastname=lastname, birthdate=birthdate, gender=gender,
                                      rank=rank, player_id=id_deserialized, score=score)

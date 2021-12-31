@@ -1,6 +1,6 @@
 class Player(object):
 
-    def __init__(self, name, lastname, birthdate, gender, rank, score=0, player_id=int):
+    def __init__(self, name, lastname, birthdate, gender, rank, player_id, score=0):
         self.name = name
         self.lastname = lastname
         self.birthdate = birthdate
@@ -18,5 +18,10 @@ class Player(object):
         self.score += points
 
     def update_rank(self, new_rank):
+        """
+        Get new rank set by user and update self.rank with new rank if int(input()) in parameter != 0
+        :param new_rank: int(input())
+        :return:
+        """
         if new_rank != 0:
             self.rank = new_rank

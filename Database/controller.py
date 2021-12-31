@@ -49,3 +49,7 @@ def deserialize_all_tournaments():
 def update_tournament(s_tournament, tournament_index):
     tournament_doc = tournament_table.get(doc_id=tournament_index + 1)
     tournament_table.upsert(tinydb.database.Document(s_tournament, doc_id=tournament_doc.doc_id))
+
+
+def last_player_id():
+    return len(get_all_players()) - 1

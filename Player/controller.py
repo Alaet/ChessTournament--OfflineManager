@@ -2,15 +2,14 @@ from .model import Player
 from .serialize import serialize_player
 
 
-class PlayerController(object):
-
-    def __init__(self, view):
+class PlayerController:
+    def __init__(self, view, last_player_id):
         self.view = view
-        self.player_id = -1
+        self.player_id = last_player_id
 
     def create_player(self):
         """
-        prompt for player info and return them as object Player
+        Prompt for player info and return them as object Player
         :return: object(Player)
         """
         self.player_id += 1
@@ -23,7 +22,7 @@ class PlayerController(object):
         birthdate = self.view.prompt_for_player_birthdate()
         new_player_id = self.player_id
         score = 0
-        new_player = Player(name, lastname, birthdate, gender, rank, score, player_id=new_player_id)
+        new_player = Player(name, lastname, birthdate, gender, rank, new_player_id, score)
         serialized_player = serialize_player(new_player)
 
         return serialized_player

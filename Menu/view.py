@@ -145,18 +145,25 @@ class View:
     def display_all_players(all_players):
         print("Afficher par ordre alphabétique - N\n")
         print("Afficher par rang - R\n")
+
         sorting_choice = type(input)
         while sorting_choice != "N" or sorting_choice != "R":
             sorting_choice = input()
             if sorting_choice == "N":
                 sorted_by_name = sorted(all_players, key=lambda x: x.name)
                 for player in sorted_by_name:
-                    print("Nom : " + player.name + " - Rang : " + str(player.rank) + "\n")
+
+                    print("ID : " + str(player.id) + " - Nom : " + player.name + " - Rang : " + str(player.rank) +
+                          "\n")
+                print("\n(Selectionner un joueur via son ID pour mettre à jour son rang,\n\"Entrée\" pour passer)")
                 break
             elif sorting_choice == "R":
                 sorted_by_rank = sorted(all_players, key=lambda x: x.rank)
                 for player in sorted_by_rank:
-                    print("Rang : " + str(player.rank) + " - Nom : " + player.name + "\n")
+
+                    print("ID : " + str(player.id) + " - Rang : " + str(player.rank) + " - Nom : " + player.name +
+                          "\n")
+                print("\n(Selectionner un joueur via son ID pour mettre à jour son rang,\n\"Entrée\" pour passer)")
                 break
             else:
                 View.display_invalid_choice()

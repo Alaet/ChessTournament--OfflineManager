@@ -14,14 +14,13 @@ from Round.view import RoundView
 
 
 class MenuController:
-
     @staticmethod
     def run():
         run = True
-
+        len_p_list = db_controller.last_player_id()
         main_view = View()
         p_view = PlayerView()
-        p_controller = PlayerController(p_view)
+        p_controller = PlayerController(p_view, len_p_list)
         t_view = TournamentView()
         t_controller = TournamentController(t_view)
         r_view = RoundView()
@@ -96,12 +95,16 @@ class MenuController:
 
                 case "4":
                     report_menu_choice = main_view.display_reports_menu()
+                    every_serialized_players = db_controller.get_all_players()
+                    every_deserialized_players = deserialized_every_players(every_serialized_players)
                     match report_menu_choice:
                         case "1":
-                            every_serialized_players = db_controller.get_all_players()
-                            every_deserialized_players = deserialized_every_players(
-                                every_serialized_players)
                             main_view.display_all_players(every_deserialized_players)
+                            choice = input()
+                            for deserialized_player in every_deserialized_players:
+                                if choice == str(deserialized_player.id):
+                                    p_controller.update_rank([deserialized_player])
+                                    db_controller.update_players_rank([deserialized_player])
                         case "2":
                             deserialized_tournaments = db_controller.deserialize_all_tournaments()
 
@@ -119,6 +122,11 @@ class MenuController:
                             match tournament_menu_choice:
                                 case "1":
                                     main_view.display_all_players(tournament.players_list)
+                                    choice = input()
+                                    for deserialized_player in every_deserialized_players:
+                                        if choice == str(deserialized_player.id):
+                                            p_controller.update_rank([deserialized_player])
+                                            db_controller.update_players_rank([deserialized_player])
                                 case "2":
                                     r_view.display_tournament_rounds(tournament)
                                 case "3":

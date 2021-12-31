@@ -42,19 +42,24 @@ class TournamentView:
         :return: list(object(Player))
         """
         x = 0
+        good = False
         picked_player = []
         for player in all_players:
             print(str(player.id) + ".  " + player.name)
-        while x < 8:
+        while not good:
+            old_len = len(picked_player)
+            if x == 8:
+                good = True
+                break
             choice = input()
-            for player in all_players:
-                if choice.isnumeric() and choice == str(player.id):
-                    picked_player.append(player)
-                    print("Joueur " + str(x) + " : " + player.name + " ajouté au tournoi")
-                    x += 1
-                # GERER ID NON PRESENT DANS LA LISTE
-            if not choice.isnumeric() or choice == "":
-                print("Id non reconnu")
+            if x < 8:
+                for player in all_players:
+                    if choice == str(player.id):
+                        picked_player.append(player)
+                        print("Joueur " + str(x) + " : " + player.name + " ajouté au tournoi")
+                        x += 1
+                if len(picked_player) == old_len:
+                    print("Id non reconnu")
 
         return picked_player
 
