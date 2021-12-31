@@ -19,11 +19,11 @@ Un nouveau rapport flake8-html sera généré dans un répertoire 'flake8-html'
 ### Informations complémentaires
 
 Utiliser le fichier 'requirements.txt' lors de l'initialisation de l'environement virtuel\
-(cf. Lancements des scripts) pour l'installation des librairies nécéssaires.
+(cf. Lancements du script) pour l'installation des librairies nécéssaires.
 
 ### Création de l'environnement virtuel
 
-Depuis l'emplacement du script, dans un terminal de commande:\
+Dans un terminal de commande, depuis l'emplacement du programme, :\
 \
 `python3 -m venv venv`\
 \
