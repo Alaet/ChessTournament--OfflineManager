@@ -9,7 +9,7 @@ Application de gestion hors-ligne de tournoi d'échec avec un système de ronde 
 
 ## PEP-8
 
-Depuis l'emplacement du script, dans un terminal de commande:
+Dans un terminal de commande, depuis l'emplacement du programme :
 
 `flake8 --max-line-length 119 --exclude=venv/ --format=html --htmldir=flake8-html`
 
@@ -23,7 +23,7 @@ Utiliser le fichier 'requirements.txt' lors de l'initialisation de l'environemen
 
 ### Création de l'environnement virtuel
 
-Dans un terminal de commande, depuis l'emplacement du programme, :\
+Dans un terminal de commande, depuis l'emplacement du programme :\
 \
 `python3 -m venv venv`\
 \
@@ -31,7 +31,7 @@ Dans un terminal de commande, depuis l'emplacement du programme, :\
 \
 `activate`
 
-### Lancement du script
+### Lancement du programme
 \
 `cd ../..`\
 \

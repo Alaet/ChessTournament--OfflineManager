@@ -1,6 +1,7 @@
 import os
 
 import Database.controller as db_controller
+import Database.view as db_view
 
 from Menu.view import View
 from Player.controller import PlayerController
@@ -17,10 +18,10 @@ class MenuController:
     @staticmethod
     def run():
         run = True
-        len_p_list = db_controller.last_player_id()
+        last_player_id = db_controller.last_player_id()
         main_view = View()
         p_view = PlayerView()
-        p_controller = PlayerController(p_view, len_p_list)
+        p_controller = PlayerController(p_view, last_player_id)
         t_view = TournamentView()
         t_controller = TournamentController(t_view)
         r_view = RoundView()
@@ -44,7 +45,7 @@ class MenuController:
                     serialized_tournament = serialize_tournament(new_tournament, serialized_round)
 
                     if new_tournament is not None:
-                        db_controller.insert_player(serialized_tournament)
+                        db_controller.insert_tournament(serialized_tournament)
 
                 case "3":
                     deserialized_tournaments = db_controller.deserialize_all_tournaments()
@@ -107,7 +108,9 @@ class MenuController:
                                     db_controller.update_players_rank([deserialized_player])
                         case "2":
                             deserialized_tournaments = db_controller.deserialize_all_tournaments()
-
+                            if len(deserialized_tournaments) == 0:
+                                db_view.display_no_tournament_registered()
+                                continue
                             main_view.display_all_tournaments(deserialized_tournaments)
                             t_choice = input()
                             if t_choice == "" or t_choice.isalpha():
@@ -131,6 +134,8 @@ class MenuController:
                                     r_view.display_tournament_rounds(tournament)
                                 case "3":
                                     t_view.display_tournament_matches(tournament)
+                        case "0":
+                            pass
                 case "0":
                     run = False
         os.system(exit())

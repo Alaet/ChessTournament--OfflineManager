@@ -4,7 +4,8 @@ class View:
 
         self.main_menu_options = ["1. Créer Joueur", "2. Créer tournoi", "3. Entrée les résultats d'un match",
                                   "4. Rapports", "0. Quitter programme"]
-        self.menu_options_data_base = ["1. Liste de tous les joueurs", "2. Liste de tous les tournois"]
+        self.menu_options_data_base = ["1. Liste de tous les joueurs", "2. Liste de tous les tournois",
+                                       "0. Menu principal"]
 
     def display_reports_menu(self):
         """
@@ -12,10 +13,11 @@ class View:
         :return: user choice
         """
         print("*************************************\n\n")
+
         for option in self.menu_options_data_base:
             print(option)
         choice = input()
-        while choice != "1" and not "2" or not "0" and not "":
+        while choice == "" or choice != "1" and choice != "2" and choice != "0":
             self.display_invalid_choice()
             choice = input()
 
@@ -92,18 +94,21 @@ class View:
         try:
 
             t_choice = self.display_tournaments(all_t_list)
+            if t_choice == "" or t_choice.isalpha():
+                self.display_invalid_choice()
+                return main_menu
             if all_t_list[int(t_choice) - 1].close:
                 print("Tournoi TERMINE")
                 return main_menu
-            if str(t_choice) == "0":
+            if t_choice == "0":
                 return main_menu
-            while not (t_choice.isnumeric()) and not (t_choice == ""):
-                self.display_invalid_choice()
-                t_choice = self.display_tournaments(all_t_list)
             t_choice = int(t_choice)
 
             r_choice = self.display_rounds(all_t_list[t_choice - 1])
-            if str(r_choice) == "0":
+            if r_choice == "":
+                self.display_invalid_choice()
+                return main_menu
+            if r_choice == "0":
                 return main_menu
             while not (r_choice.isnumeric()) and not (r_choice == ""):
                 self.display_invalid_choice()
@@ -111,8 +116,11 @@ class View:
             r_choice = int(r_choice)
 
             m_choice = self.display_matches(all_t_list[t_choice - 1].rounds[r_choice - 1]['match_history'])
+            if m_choice == "" or m_choice.isalpha():
+                self.display_invalid_choice()
+                return main_menu
             if not all_t_list[t_choice - 1].rounds[r_choice - 1]['match_history'][int(m_choice) - 1]['evaluated']:
-                if str(m_choice) == "0":
+                if m_choice == "0":
                     return main_menu
                 while not (m_choice.isnumeric()) and not (m_choice == ""):
                     self.display_invalid_choice()
