@@ -16,7 +16,7 @@ class RoundController(object):
 
         sorted_list = self.sort_players_as_dict(tournament.players_list)
         versus = self.generate_pair_from_id(sorted_list)
-        matches = MatchController.generate_match_list(tournament.players_list, versus)
+        matches = MatchController.generate_match_list(sorted_list=tournament.players_list, versus=versus)
         new_round = Round(matches)
 
         new_round.round_name = "Round " + str(tournament.round_count)
