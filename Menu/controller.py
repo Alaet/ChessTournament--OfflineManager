@@ -13,7 +13,6 @@ from Tournament.view import TournamentView
 from Round.controller import RoundController
 from Round.serialize import serialize_round
 from Round.view import RoundView
-from Match.controller import MatchController
 
 
 class MenuController:
@@ -28,7 +27,6 @@ class MenuController:
         t_controller = TournamentController(t_view)
         r_view = RoundView()
         r_controller = RoundController(r_view)
-        m_controller = MatchController
         while run:
             main_menu_choice = main_view.display_main_menu()
             match main_menu_choice:
@@ -52,50 +50,54 @@ class MenuController:
 
                 case "3":
                     deserialized_tournaments = db_controller.deserialize_all_tournaments()
-                    t0_r1_m2_choices = main_view.prompt_for_match_detail(deserialized_tournaments)
-                    if -1 in t0_r1_m2_choices:
+                    t_r_m_choices = main_view.prompt_for_match_detail(deserialized_tournaments)
+                    t_choice = t_r_m_choices[0]
+                    r_choice = t_r_m_choices[1]
+                    m_choice = t_r_m_choices[2]
+                    if -1 in t_r_m_choices:
                         continue
                     else:
                         result = \
-                            m_controller.evaluate_match(deserialized_tournaments[t0_r1_m2_choices[0]].rounds
-                                                        [t0_r1_m2_choices[1]]['match_history'][t0_r1_m2_choices[2]],
-                                                        deserialized_tournaments[t0_r1_m2_choices[0]])
+                            t_controller.evaluate_match(deserialized_tournaments[t_choice].rounds
+                                                        [r_choice]['match_history'][m_choice],
+                                                        deserialized_tournaments[t_choice])
 
                         if result == 4:
-                            if not deserialized_tournaments[t0_r1_m2_choices[0]].round_count > \
-                                   deserialized_tournaments[t0_r1_m2_choices[0]].turn:
+                            if not deserialized_tournaments[t_choice].round_count > \
+                                   deserialized_tournaments[t_choice].turn:
 
-                                r_controller.cloture_round(deserialized_tournaments[t0_r1_m2_choices[0]].
-                                                           rounds[t0_r1_m2_choices[1]])
+                                r_controller.cloture_round(deserialized_tournaments[t_choice].rounds[r_choice])
 
-                                deserialized_tournaments[t0_r1_m2_choices[0]].players_list = \
-                                    serialize_tournament_players(deserialized_tournaments[t0_r1_m2_choices[
-                                        0]].players_list)
+                                deserialized_tournaments[t_choice].players_list = \
+                                    serialize_tournament_players(deserialized_tournaments[t_choice].players_list)
 
-                                next_round = r_controller.generate_round(deserialized_tournaments[t0_r1_m2_choices[0]])
+                                next_round = r_controller.generate_round(deserialized_tournaments[t_choice])
 
                                 serialized_round = serialize_round(next_round)
-                                deserialized_tournaments[t0_r1_m2_choices[0]].rounds.insert(len(
-                                    deserialized_tournaments[t0_r1_m2_choices[0]].rounds), serialized_round)
+                                deserialized_tournaments[t_choice].rounds.insert(len(
+                                    deserialized_tournaments[t_choice].rounds), serialized_round)
 
                             else:
-                                p_controller.update_rank(deserialized_tournaments[t0_r1_m2_choices[0]].players_list)
 
-                                db_controller.update_players_rank(deserialized_tournaments[t0_r1_m2_choices[
-                                    0]].players_list)
+                                t_controller.display_tournament_result(deserialized_tournaments[t_choice].rounds[
+                                                                           r_choice]['match_history'])
 
-                                deserialized_tournaments[t0_r1_m2_choices[0]].close = True
+                                p_controller.update_rank(deserialized_tournaments[t_choice].players_list)
 
-                                p_controller.reset_score(deserialized_tournaments[t0_r1_m2_choices[0]].players_list)
+                                db_controller.update_players_rank(deserialized_tournaments[t_choice].players_list)
 
-                    s_tournament = serialize_tournament(deserialized_tournaments[t0_r1_m2_choices[0]],
-                                                        deserialized_tournaments[t0_r1_m2_choices[0]].rounds)
+                                deserialized_tournaments[t_choice].close = True
+
+                                p_controller.reset_score(deserialized_tournaments[t_choice].players_list)
+
+                    s_tournament = serialize_tournament(deserialized_tournaments[t_choice],
+                                                        deserialized_tournaments[t_choice].rounds)
                     try:
                         s_tournament['players_list'] = serialize_tournament_players(s_tournament['players_list'])
                     except AttributeError:
                         pass
 
-                    db_controller.update_tournament(s_tournament, t0_r1_m2_choices[0])
+                    db_controller.update_tournament(s_tournament, t_choice)
 
                 case "4":
                     report_menu_choice = main_view.display_reports_menu()
@@ -115,14 +117,14 @@ class MenuController:
                                 db_view.display_no_tournament_registered()
                                 continue
                             main_view.display_all_tournaments(deserialized_tournaments)
-                            t_choice = input()
-                            if t_choice == "" or t_choice.isalpha():
+                            t_choice_option = input()
+                            if t_choice_option == "" or t_choice_option.isalpha():
                                 main_view.display_invalid_choice()
                                 continue
                             tournament = None
                             for x, tournament in enumerate(deserialized_tournaments):
-                                if int(t_choice) == deserialized_tournaments.index(deserialized_tournaments[x]):
-                                    tournament = deserialized_tournaments[int(t_choice)]
+                                if int(t_choice_option) == deserialized_tournaments.index(deserialized_tournaments[x]):
+                                    tournament = deserialized_tournaments[int(t_choice_option)]
                             tournament_menu_choice = t_view.display_tournament_option_menu()
 
                             match tournament_menu_choice:

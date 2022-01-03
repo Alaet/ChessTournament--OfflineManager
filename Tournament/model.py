@@ -12,3 +12,6 @@ class Tournament:
         self.close = False
         self.time_mode = time_mode
         self.description = description
+
+    def __str__(self):
+        return self.name + "   / Date de début : " + self.date

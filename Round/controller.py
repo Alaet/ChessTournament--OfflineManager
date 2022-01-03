@@ -1,5 +1,6 @@
 import datetime
-from Match.model import Match
+
+from Match.controller import MatchController
 from .model import Round
 
 
@@ -16,7 +17,7 @@ class RoundController(object):
 
         sorted_list = self.sort_players_as_dict(tournament.players_list)
         versus = self.generate_pair_from_id(sorted_list)
-        matches = self.generate_match_list(tournament.players_list, versus)
+        matches = MatchController.generate_match_list(tournament.players_list, versus)
         new_round = Round(matches)
 
         new_round.round_name = "Round " + str(tournament.round_count)
@@ -25,36 +26,6 @@ class RoundController(object):
         new_round.round_starting_date = datetime.datetime.now()
         new_round.round_starting_date = new_round.round_starting_date.strftime("%Y-%m-%d %H:%M:%S")
         return new_round
-
-    @staticmethod
-    def generate_match_list(sorted_list, versus):
-        """
-        Take sorted dict and versus as ID to create tuple of match with object(Player) and player.score
-        :param sorted_list: dict{"player": object(Player),
-                                 "player_data" : dict{int, int, int, list}
-                                 }
-        :param versus: tuple[(versus_as_id),(versus_as_id),(versus_as_id),(versus_as_id)]
-        :return: tuple[
-                        [(Player, player.score), (Player, player.score)],
-                        [(Player, player.score), (Player, player.score)],
-                        [(Player, player.score), (Player, player.score)],
-                        [(Player, player.score), (Player, player.score)]
-                      ]
-        """
-        round_pair_player_list = []
-
-        for match in versus:
-            try:
-                opponents = [(sorted_list[match[0]], sorted_list[match[0]].score), (sorted_list[match[1]],
-                                                                                    sorted_list[match[1]].score)]
-            except AttributeError:
-                opponents = [(sorted_list[match[0]], sorted_list[match[0]]['score']),
-                             (sorted_list[match[1]], sorted_list[match[1]]['score'])]
-            evaluated = False
-            current_match = Match(opponents, evaluated)
-
-            round_pair_player_list.append(current_match)
-        return round_pair_player_list
 
     @staticmethod
     def sort_players_as_dict(players):
@@ -75,7 +46,6 @@ class RoundController(object):
             players_sorted.append(player_data)
 
             players_sorted.sort(key=lambda row: (row.get("id"), row.get("score"), row.get("rank")), reverse=True)
-
             for i in range(0, len(players_sorted)):
                 for j in range(0, len(players_sorted) - i - 1):
                     if players_sorted[j]["player_data"]["score"] == players_sorted[j + 1]["player_data"]["score"]:

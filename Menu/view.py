@@ -43,11 +43,11 @@ class View:
         """
         Display all tournaments existing
         :param all_tournaments: list(all_tournaments)
-        :return: user tournament choice - tournament_choice
+        :return: int(tournament_choice)
         """
         print("Pour quel tournoi ?    ( 0 - Menu principal )")
         for x, tournament in enumerate(all_tournaments):
-            print(str(x+1) + " . " + str(tournament.name) + "\n")
+            print(str(x+1) + " . " + str(tournament) + "\n")
         tournament_choice = input()
         return tournament_choice
 
@@ -56,7 +56,7 @@ class View:
         """
         Display all rounds existing
         :param current_tournament: object(Tournament)
-        :return: user round choice - round_choice
+        :return: int(round_choice)
         """
         print("Quel round ?    ( 0 - Menu principal )")
         for x, current_round in enumerate(current_tournament.rounds):
@@ -68,8 +68,8 @@ class View:
     def display_matches(match_list):
         """
         Display all match existing
-        :param match_list: list(match)
-        :return: user match choice - match_choice
+        :param match_list: list(dict{matches_data})
+        :return: int(match_choice)
         """
 
         print("Quel match ?    ( 0 - Menu principal )")
@@ -149,7 +149,7 @@ class View:
     @staticmethod
     def display_all_tournaments(all_tournaments):
         for x, t in enumerate(all_tournaments):
-            print(str(all_tournaments.index(all_tournaments[x])) + " - " + t.name + "   / Date de début : " + t.date)
+            print(str(all_tournaments.index(all_tournaments[x])) + " - " + str(t))
 
     def display_all_players(self, all_players):
         print("Afficher par ordre alphabétique - N\n")
