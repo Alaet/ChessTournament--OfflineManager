@@ -2,6 +2,10 @@ class PlayerView:
 
     @staticmethod
     def prompt_for_player_name():
+        """
+        Prompt for a name
+        :return: str
+        """
 
         name = input("\n\nEntrez le prénom du joueur    ( 0 - Menu principal )\n")
 
@@ -14,6 +18,10 @@ class PlayerView:
 
     @staticmethod
     def prompt_for_player_lastname():
+        """
+        Prompt for a lastname
+        :return: str
+        """
 
         lastname = input("\n\nEntrez le nom du joueur\n")
         while not lastname.isalpha():
@@ -23,6 +31,10 @@ class PlayerView:
 
     @staticmethod
     def prompt_for_player_gender():
+        """
+        prompt_for_player_gender
+        :return: str
+        """
 
         gender = input("Entrez le genre : Male / Female\n")
         while not (gender == "Female" or gender == "F") and not (gender == "Male" or gender == "M"):
@@ -32,6 +44,10 @@ class PlayerView:
 
     @staticmethod
     def prompt_for_player_rank():
+        """
+        prompt_for_player_rank
+        :return: int
+        """
 
         rank = input("Entrez le rang actuel\n")
         while not rank.isnumeric() or rank == "" or rank == "0":
@@ -41,6 +57,10 @@ class PlayerView:
 
     @staticmethod
     def prompt_for_player_birthdate():
+        """
+        prompt_for_player_birthdate
+        :return: str
+        """
 
         is_date_valid = False
         birthdate = None
@@ -62,6 +82,10 @@ class PlayerView:
 
     @staticmethod
     def prompt_for_new_rank():
+        """
+        prompt_for_new_rank
+        :return: int
+        """
         new_rank = input()
         while new_rank == "0" or new_rank.isalpha() or new_rank == "":
             if new_rank == "0":
@@ -75,5 +99,5 @@ class PlayerView:
     @staticmethod
     def display_new_player_rank(player):
         print("\n*****************************\n")
-        print("Ancien rang de " + player.name + str(player.rank))
+        print("Ancien rang de " + player.name + " :  " + str(player.rank))
         print("Mettez à jour le rang : ")

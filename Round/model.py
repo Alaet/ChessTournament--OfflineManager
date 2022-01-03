@@ -1,4 +1,4 @@
-class Round(object):
+class Round:
 
     def __init__(self, match_list):
 

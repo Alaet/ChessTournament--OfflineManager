@@ -18,6 +18,8 @@ from Round.controller import RoundController
 from Round.serialize import serialize_round
 from Round.view import RoundView
 
+from Match.controller import MatchController
+
 
 class TestDatabaseController(unittest.TestCase):
 
@@ -57,8 +59,8 @@ class TestDatabaseController(unittest.TestCase):
 
             deserialized_tournaments.append(current_deserialize_tournament)
 
-        TournamentController.evaluate_match(deserialized_tournaments[0].rounds[0]['match_history'][3],
-                                            deserialized_tournaments[0])
+        MatchController.evaluate_match(deserialized_tournaments[0].rounds[0]['match_history'][3],
+                                       deserialized_tournaments[0])
         s_tournament = serialize_tournament(deserialized_tournaments[0], deserialized_tournaments[0].rounds)
         s_tournament['players_list'] = serialize_tournament_players(s_tournament['players_list'])
         tournament_doc = tournament_table_test.get(doc_id=0 + 1)

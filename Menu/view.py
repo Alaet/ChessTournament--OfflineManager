@@ -12,7 +12,7 @@ class View:
         Dsplay main report menu option
         :return: user choice
         """
-        print("*************************************\n\n")
+        print("\n\n*************************************\n\n")
 
         for option in self.menu_options_data_base:
             print(option)
@@ -45,11 +45,9 @@ class View:
         :param all_tournaments: list(all_tournaments)
         :return: user tournament choice - tournament_choice
         """
-        index = 1
         print("Pour quel tournoi ?    ( 0 - Menu principal )")
-        for tournament in all_tournaments:
-            print(str(index) + " . " + str(tournament.name) + "\n")
-            index += 1
+        for x, tournament in enumerate(all_tournaments):
+            print(str(x+1) + " . " + str(tournament.name) + "\n")
         tournament_choice = input()
         return tournament_choice
 
@@ -145,12 +143,15 @@ class View:
         print("\n\nChoix invalide\n\n")
 
     @staticmethod
+    def display_update_player_rank():
+        print("\n(Selectionner un joueur via son ID pour mettre à jour son rang,\n\"Entrée\" pour passer)")
+
+    @staticmethod
     def display_all_tournaments(all_tournaments):
         for x, t in enumerate(all_tournaments):
             print(str(all_tournaments.index(all_tournaments[x])) + " - " + t.name + "   / Date de début : " + t.date)
 
-    @staticmethod
-    def display_all_players(all_players):
+    def display_all_players(self, all_players):
         print("Afficher par ordre alphabétique - N\n")
         print("Afficher par rang - R\n")
 
@@ -160,18 +161,17 @@ class View:
             if sorting_choice == "N":
                 sorted_by_name = sorted(all_players, key=lambda x: x.name)
                 for player in sorted_by_name:
-
-                    print("ID : " + str(player.id) + " - Nom : " + player.name + " - Rang : " + str(player.rank) +
-                          "\n")
-                print("\n(Selectionner un joueur via son ID pour mettre à jour son rang,\n\"Entrée\" pour passer)")
+                    print(player)
+                self.display_update_player_rank()
                 break
+
             elif sorting_choice == "R":
                 sorted_by_rank = sorted(all_players, key=lambda x: x.rank)
                 for player in sorted_by_rank:
-
                     print("ID : " + str(player.id) + " - Rang : " + str(player.rank) + " - Nom : " + player.name +
                           "\n")
-                print("\n(Selectionner un joueur via son ID pour mettre à jour son rang,\n\"Entrée\" pour passer)")
+                self.display_update_player_rank()
                 break
+
             else:
-                View.display_invalid_choice()
+                self.display_invalid_choice()

@@ -6,12 +6,14 @@ import Database.view as db_view
 from Menu.view import View
 from Player.controller import PlayerController
 from Player.view import PlayerView
+from Player.serialize import deserialized_every_players
 from Tournament.controller import TournamentController
-from Tournament.serialize import serialize_tournament, deserialized_every_players, serialize_tournament_players
+from Tournament.serialize import serialize_tournament, serialize_tournament_players
 from Tournament.view import TournamentView
 from Round.controller import RoundController
 from Round.serialize import serialize_round
 from Round.view import RoundView
+from Match.controller import MatchController
 
 
 class MenuController:
@@ -26,6 +28,7 @@ class MenuController:
         t_controller = TournamentController(t_view)
         r_view = RoundView()
         r_controller = RoundController(r_view)
+        m_controller = MatchController
         while run:
             main_menu_choice = main_view.display_main_menu()
             match main_menu_choice:
@@ -54,7 +57,7 @@ class MenuController:
                         continue
                     else:
                         result = \
-                            t_controller.evaluate_match(deserialized_tournaments[t0_r1_m2_choices[0]].rounds
+                            m_controller.evaluate_match(deserialized_tournaments[t0_r1_m2_choices[0]].rounds
                                                         [t0_r1_m2_choices[1]]['match_history'][t0_r1_m2_choices[2]],
                                                         deserialized_tournaments[t0_r1_m2_choices[0]])
 
@@ -62,7 +65,7 @@ class MenuController:
                             if not deserialized_tournaments[t0_r1_m2_choices[0]].round_count > \
                                    deserialized_tournaments[t0_r1_m2_choices[0]].turn:
 
-                                t_controller.cloture_round(deserialized_tournaments[t0_r1_m2_choices[0]].
+                                r_controller.cloture_round(deserialized_tournaments[t0_r1_m2_choices[0]].
                                                            rounds[t0_r1_m2_choices[1]])
 
                                 deserialized_tournaments[t0_r1_m2_choices[0]].players_list = \
@@ -83,7 +86,7 @@ class MenuController:
 
                                 deserialized_tournaments[t0_r1_m2_choices[0]].close = True
 
-                                t_controller.reset_score(deserialized_tournaments[t0_r1_m2_choices[0]].players_list)
+                                p_controller.reset_score(deserialized_tournaments[t0_r1_m2_choices[0]].players_list)
 
                     s_tournament = serialize_tournament(deserialized_tournaments[t0_r1_m2_choices[0]],
                                                         deserialized_tournaments[t0_r1_m2_choices[0]].rounds)
@@ -101,9 +104,9 @@ class MenuController:
                     match report_menu_choice:
                         case "1":
                             main_view.display_all_players(every_deserialized_players)
-                            choice = input()
+                            id_player_to_update = input()
                             for deserialized_player in every_deserialized_players:
-                                if choice == str(deserialized_player.id):
+                                if id_player_to_update == str(deserialized_player.id):
                                     p_controller.update_rank([deserialized_player])
                                     db_controller.update_players_rank([deserialized_player])
                         case "2":
@@ -125,9 +128,9 @@ class MenuController:
                             match tournament_menu_choice:
                                 case "1":
                                     main_view.display_all_players(tournament.players_list)
-                                    choice = input()
+                                    id_player_to_update = input()
                                     for deserialized_player in every_deserialized_players:
-                                        if choice == str(deserialized_player.id):
+                                        if id_player_to_update == str(deserialized_player.id):
                                             p_controller.update_rank([deserialized_player])
                                             db_controller.update_players_rank([deserialized_player])
                                 case "2":

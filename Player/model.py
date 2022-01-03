@@ -1,4 +1,4 @@
-class Player(object):
+class Player:
 
     def __init__(self, name, lastname, birthdate, gender, rank, player_id, score=0):
         self.name = name
@@ -8,6 +8,9 @@ class Player(object):
         self.rank = rank
         self.id = player_id
         self.score = score
+
+    def __str__(self):
+        return "ID : " + str(self.id) + " - Nom : " + self.name + " - Rang : " + str(self.rank) + "\n"
 
     def add_score(self, points):
         """

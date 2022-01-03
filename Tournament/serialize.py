@@ -1,8 +1,14 @@
 from .model import Tournament
-from Player.model import Player
+from Player.serialize import deserialized_every_players
 
 
 def serialize_tournament(new_tournament, current_round):
+    """
+    Transform an object(Tournament) in dict
+    :param new_tournament: object(Tournament)
+    :param current_round: object(Round)
+    :return: dict{tournament_datas}
+    """
     serialized_tournament = {
         'name': new_tournament.name,
         'place': new_tournament.place,
@@ -19,7 +25,11 @@ def serialize_tournament(new_tournament, current_round):
 
 
 def deserialize_tournament(new_tournament):
-
+    """
+    Transform a dict{tournament_datas} in object(Tournament)
+    :param new_tournament: dict{tournament_datas}
+    :return: object(Tournament)
+    """
     name = new_tournament['name']
     place = new_tournament['place']
     date = new_tournament['date']
@@ -37,23 +47,12 @@ def deserialize_tournament(new_tournament):
     return deserialized_tournament
 
 
-def deserialized_every_players(serialized_player):
-    all_players_deserialized = []
-    for x, player in enumerate(serialized_player):
-        name = serialized_player[x]['name']
-        lastname = serialized_player[x]['lastname']
-        birthdate = serialized_player[x]['birthdate']
-        gender = serialized_player[x]['gender']
-        rank = serialized_player[x]['rank']
-        id_deserialized = serialized_player[x]['id']
-        score = serialized_player[x]['score']
-        deserialized_player = Player(name=name, lastname=lastname, birthdate=birthdate, gender=gender,
-                                     rank=rank, player_id=id_deserialized, score=score)
-        all_players_deserialized.append(deserialized_player)
-    return all_players_deserialized
-
-
 def serialize_tournament_players(tournament_player):
+    """
+    Transform every object(Player) for a given tournament in list(dict{players_data})
+    :param tournament_player: list(object(Player))
+    :return: list(dict{players_data})
+    """
     serialized_players = []
     for player in tournament_player:
         serialized_players.append({
