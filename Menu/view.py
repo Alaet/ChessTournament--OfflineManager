@@ -77,8 +77,10 @@ class View:
             if match['evaluated']:
                 print(str(x+1) + ".Match terminé\n")
             else:
-                print(str(x+1) + "." + str(match['match_info'][0][0]['name']) + " contre " +
-                      str(match['match_info'][1][0]['name']) + "\n")
+                print(str(x+1) + "." + str(match['match_info'][0][0]['name']) + " " + str(match['match_info'][0][0][
+                                                                                        'lastname']) + " contre " +
+                      str(match['match_info'][1][0]['name']) + " " + str(match['match_info'][1][0][
+                                                                                        'lastname']) + "\n")
         match_choice = input()
         return match_choice
 
