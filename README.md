@@ -37,9 +37,11 @@ Dans un terminal de commande, depuis l'emplacement du programme :\
 \
 `pip install -r requirements.txt`\
 \
-`python3 main.py`
+`python3 tournament_manager.py`
 
 ## Utilisation
+
+Une fois le programme démarré, la navigation dans les menus se fait par sélection d'index :
 
  + **"1. Créer Joueur"** : *Ajout d'un joueur dans la base de donnée locale*
  + **"2. Créer tournoi"** : *Ajout d'un tournoi à partir d'une liste de 8 joueurs, 4 tours par défaut, au format ronde 
