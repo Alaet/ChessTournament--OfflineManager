@@ -75,7 +75,7 @@ class TournamentController:
     def display_tournament_result(matches):
         """
         Display sorted players based on player score
-        :param matches: 
+        :param matches:
         :return:
         """
         tournament_result = []
