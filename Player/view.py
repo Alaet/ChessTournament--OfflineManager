@@ -36,10 +36,10 @@ class PlayerView:
         :return: str
         """
 
-        gender = input("Entrez le genre : Male / Female\n")
+        gender = input("Entrez le genre : Male / Female  (M / F)\n")
         while not (gender == "Female" or gender == "F") and not (gender == "Male" or gender == "M"):
             print("Le format du genre n'est pas reconnu")
-            gender = input("Entrez le genre : Male / Female\n")
+            gender = input("Entrez le genre : Male / Female  (M / F)\n")
         return gender
 
     @staticmethod
@@ -74,9 +74,9 @@ class PlayerView:
                     birthdate = birthdate.strftime('%d-%m-%Y')
                     is_date_valid = True
                 else:
-                    print("Le format de la date de naissance n'est pas reconnue")
+                    print("Le format de la date de naissance n'est pas reconnue\n")
             except dateutil.parser.ParserError:
-                print("Le format de la date de naissance n'est pas reconnue")
+                print("Le format de la date de naissance n'est pas reconnue\n")
 
         return birthdate
 

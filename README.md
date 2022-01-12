@@ -41,7 +41,8 @@ Dans un terminal de commande, depuis l'emplacement du programme :\
 
 ## Utilisation
 
-Une fois le programme démarré, la navigation dans les menus se fait par sélection d'index :
+Une fois le programme démarré, la navigation dans les menus se fait par sélection d'index (0 pour un retour au menu 
+principal) :
 
  + **"1. Créer Joueur"** : *Ajout d'un joueur dans la base de donnée locale*
  + **"2. Créer tournoi"** : *Ajout d'un tournoi à partir d'une liste de 8 joueurs, 4 tours par défaut, au format ronde 
@@ -49,10 +50,10 @@ Une fois le programme démarré, la navigation dans les menus se fait par sélec
  + **"3. Entrée les résultats d'un match"** : *Renseigner les résultats d'un match, génére le tour suivant lorsque 
    les résultats du tour sont renseignés*
  + **"4. Rapports"** : Permet d'accéder à :
-   + *La liste de tous les joueurs*,
-   + *La liste de tous les tournois*:
-     + *la liste de tous les joueurs d'un tournoi*,
-     + *le détail de chaque tour d'un tournoi*,
-     + *le détail de chaque match pour chaque tour d'un tournoi*
+   + *1. La liste de tous les joueurs*,
+   + *2. La liste de tous les tournois*:
+     + *1. la liste de tous les joueurs d'un tournoi*,
+     + *2. le détail de chaque tour d'un tournoi*,
+     + *3. le détail de chaque match pour chaque tour d'un tournoi*
    + *Modifier le rang d'un joueur*
  + **"0. Quitter programme"**

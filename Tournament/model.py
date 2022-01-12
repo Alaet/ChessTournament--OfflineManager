@@ -13,5 +13,8 @@ class Tournament:
         self.time_mode = time_mode
         self.description = description
 
-    def __str__(self):
-        return self.name + "   / Date de début : " + self.date
+    def __repr__(self):
+        new_name = self.name + "   / Date de début : " + self.date
+        if self.description != "":
+            new_name = new_name + "   / Description : " + self.description
+        return new_name
