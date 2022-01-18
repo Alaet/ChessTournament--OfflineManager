@@ -11,9 +11,9 @@ Application de gestion hors-ligne de tournoi d'échec avec un système de ronde 
 
 Dans un terminal de commande, depuis l'emplacement du programme :
 
-`flake8 --max-line-length 119 --exclude=venv/ --format=html --htmldir=flake8-html`
+`flake8`
 
-Un nouveau rapport flake8-html sera généré dans un répertoire 'flake8-html'
+Un nouveau rapport flake8-html sera généré dans un répertoire 'flake8-html' basé sur le fichier setup.cfg
 
 
 ### Informations complémentaires
